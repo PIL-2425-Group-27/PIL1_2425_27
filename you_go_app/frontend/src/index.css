@@ -1,1 +1,8 @@
 @import "tailwindcss";
+@font-face {
+    font-family: manrope;
+    src: url(../public/fonts/Manrope-VariableFont_wght.ttf);
+}
+@theme{
+    --font-manrope: manrope, "sans-serif";
+}
