@@ -8,6 +8,7 @@ Requirements:
 Commandes d'installation des paquets:
 
 Frontend:
+Aller dans le dossier frontend dans le terminal de vs code avec 'cd you_go_app/frontend' ou 'cd you_go_app' puis 'cd frontend'
 
 1-    npm install :pour installer toutes les dependances du projet
 2-    npm install react-router-dom axios postcss autoprefixer
