@@ -13,6 +13,9 @@ function Register() {
                         alt="return" />
                     </a>
                 </div>
+                <div className="w-full h-full px-10 flex flex-row items-center justify-start">
+                    <h1 className="text-4xl ">Inscription</h1>
+                </div>
                 <form
                     className="w-full h-fit flex flex-col items-center gap-3.5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
                     action=""
@@ -99,16 +102,15 @@ function Register() {
                     </button>
                     <p>ou</p>
                     <button
-                        type="submit"
-                        className="w-9/12 max-w-lg h-13 px-4 rounded-4xl flex flex-row items-center justify-center text-gray-500 bg-white"
+                        className="w-9/12 max-w-lg h-13 px-4 rounded-4xl flex flex-row items-center justify-center text-gray-500 bg-gray-100"
                     >
                         <p
                             className="w-max"
                         >Continuer avec
                         </p>
                         <img
-                            className="mx-2 w-20"
-                            src="./src/assets/icons/google.png"
+                            className="mx-2 w-9"
+                            src="./src/assets/icons/google.svg"
                             alt="googleIcon" />
                     </button>
                     <p
