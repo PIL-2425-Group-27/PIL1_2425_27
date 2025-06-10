@@ -97,7 +97,7 @@ function Register() {
                     <button
                         disabled
                         type="submit"
-                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-blue-300"
+                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-green-300"
                     >S'inscrire
                     </button>
                     <p>ou</p>

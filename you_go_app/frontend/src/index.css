@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwindcss-animated";
 
 @font-face {
     font-family: manrope;
@@ -16,6 +17,7 @@
         -webkit-appearance: none;
         margin: 0;
     }
+
     input[type="number"] {
         appearance: textfield;
     }

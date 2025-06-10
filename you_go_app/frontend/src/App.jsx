@@ -15,13 +15,14 @@ import RideDetails from './pages/RideDetails';
 import SearchRides from './pages/SearchRides';
 import Support from './pages/Support';
 import Tracking from './pages/Tracking';
-
-
+import Landing from './pages/LandingPage';
+let loggedIn = true;
+let page =loggedIn?<Home/>:<Landing/>
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={page} />
         <Route path="/Chat" element={<Chat />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Billing" element={<Billing />} />
