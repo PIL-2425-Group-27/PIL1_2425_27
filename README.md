@@ -4,7 +4,7 @@ Cloner le projet avec git
 
 Requirements:
     nodeJS
-    (ajouter les autres dependances au fur et a mesure aue le projet avance)
+    (ajouter les autres dependances au fur et a mesure que le projet avance)
 Commandes d'installation des paquets:
 
 Frontend:
@@ -16,4 +16,5 @@ Aller dans le dossier frontend dans le terminal de vs code avec 'cd you_go_app/f
 4-    npm run dev
 (liste a etendre)
 
-Backend:
+Backend: 
+Dans le dossier backend, vous trouverez un fichier requirements.txt, ça regroupe toutes les dependances et outils utilisés lors de vos differents travaux; vous les inserer dedans en faisant une description de votre travail tout au long du processus..
