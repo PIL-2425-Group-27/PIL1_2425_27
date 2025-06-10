@@ -7,7 +7,7 @@ function Login() {
 
                 <div className="flex flex-row items-start px-2.5 absolute top-12 left-3">
                     <a href="/"><img
-                        className="w-6 aspect-square"
+                        className="w-5 aspect-square"
                         src="./src/assets/icons/left-arrow.svg"
                         alt="return" />
                     </a>
@@ -17,7 +17,7 @@ function Login() {
                     action=""
                     method="post"
                 >
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             className=""
                             placeholder="E-mail ou téléphone"
@@ -28,7 +28,7 @@ function Login() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             placeholder="Mot de passe"
                             type={visible ? 'text' : 'password'}
@@ -47,7 +47,7 @@ function Login() {
                     <button
                         disabled
                         type="submit"
-                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-blue-300"
+                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffdc74]"
                     >Se connecter
                     </button>
                     <p

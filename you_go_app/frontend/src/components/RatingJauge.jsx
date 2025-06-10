@@ -1,9 +1,8 @@
-
-function Title(props) {
+function RTJauge(props) {
     let floating = props.floating==true? 'absolute':'';
    return(
     <>
-    <h1 className={`top-[2vh] text-2xl  font-bold mt-2 ${floating}`}>
+    <h1 className={`top-[4vh] text-2xl  font-bold mt-2 ${floating}`}>
     {props.content}
     </h1>
     <p
@@ -11,4 +10,4 @@ function Title(props) {
     >{props.subContent}</p>
     </>
    ) ;
-}export default Title
+}export default RTJauge

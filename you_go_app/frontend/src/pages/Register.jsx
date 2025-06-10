@@ -8,7 +8,7 @@ function Register() {
 
                 <div className="flex flex-row items-start px-2.5 absolute top-12 left-3">
                     <a href="/"><img
-                        className="w-6 aspect-square"
+                        className="w-5 aspect-square"
                         src="./src/assets/icons/left-arrow.svg"
                         alt="return" />
                     </a>
@@ -21,7 +21,7 @@ function Register() {
                     action=""
                     method="post"
                 >
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             placeholder="Prenom"
                             type="text"
@@ -30,7 +30,7 @@ function Register() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             placeholder="Nom"
                             type="text"
@@ -40,7 +40,7 @@ function Register() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             className=""
                             placeholder="E-mail"
@@ -51,7 +51,7 @@ function Register() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             className=""
                             placeholder="Numero de telephone"
@@ -62,7 +62,7 @@ function Register() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             placeholder="Mot de passe"
                             type={visible1 ? 'text' : 'password'}
@@ -78,7 +78,7 @@ function Register() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible1 === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             placeholder="Confirmer le mot de passe"
                             type={visible2 ? 'text' : 'password'}
@@ -97,19 +97,19 @@ function Register() {
                     <button
                         disabled
                         type="submit"
-                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-green-300"
+                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffcd74]"
                     >S'inscrire
                     </button>
                     <p>ou</p>
                     <button
-                        className="w-9/12 max-w-lg h-13 px-4 rounded-4xl flex flex-row items-center justify-center text-gray-500 bg-gray-100"
+                        className="w-9/12 max-w-lg h-13 px-4 rounded-4xl flex flex-row items-center justify-center text-gray-500 bg-gray-100 focus:bg-gray-200"
                     >
                         <p
                             className="w-max"
                         >Continuer avec
                         </p>
                         <img
-                            className="mx-2 w-9"
+                            className="mx-2 w-7"
                             src="./src/assets/icons/google.svg"
                             alt="googleIcon" />
                     </button>
