@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'accounts',
+    'offers',
 ]
 
 MIDDLEWARE = [
@@ -81,8 +82,8 @@ DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ifri_comotorage_db',
-        'USER': 'root', 
-        'PASSWORD': '322007',
+        'USER': 'django_user', 
+        'PASSWORD': 'Dieuval20',
         'HOST': 'localhost',
         'PORT': '3306',
     }

@@ -20,6 +20,7 @@ function Navbar() {
                 <li><a href="/SearchRides">Search Rides</a></li>
                 <li><a href="/Support">Support</a></li>
                 <li><a href="/Tracking">Tracking</a></li>
+                <li><a href="/RoleChoice">Role Choice</a></li>
             </ul>
         </nav>
     );
