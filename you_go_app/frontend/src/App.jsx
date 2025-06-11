@@ -16,6 +16,7 @@ import SearchRides from './pages/SearchRides';
 import Support from './pages/Support';
 import Tracking from './pages/Tracking';
 import Landing from './pages/LandingPage';
+import RoleChoice from './pages/RoleChoice';
 let loggedIn = true;
 let page =loggedIn?<Home/>:<Landing/>
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/SearchRides" element={<SearchRides />} />
         <Route path="/Support" element={<Support />} />
         <Route path="/Tracking" element={<Tracking />} />
+        <Route path="/RoleChoice" element={<RoleChoice />} />
       </Routes>
     </BrowserRouter>
   );

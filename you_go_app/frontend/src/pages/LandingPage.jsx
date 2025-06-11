@@ -4,14 +4,14 @@ import { useState } from 'react';
 function Landing() {
     const [anim, setanim] = useState('animate-ping')
     const [trans, setTrans] = useState()
-    const [logo, setlogo] = useState('./public/logo.svg')
+    const [logo, setlogo] = useState('./logo.svg')
     const [bg, setbg] = useState()
     setTimeout(() => {
         setanim('hidden')
         setTrans('-translate-y-[45vh] -translate-x-[40vw] scale-28')
     }, 3000);
     setTimeout(() => {
-        setlogo('./public/logo-light.svg')
+        setlogo('./logo-light.svg')
     }, 3200);
     setTimeout(() => {
         setbg('opacity-15')
