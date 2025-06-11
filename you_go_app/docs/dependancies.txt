@@ -1,0 +1,17 @@
+Dependances du projet cote Front-end:
+
+Avant de lancer le projet, installer les dependances ci-apres: 
+
+    1-Node-JS
+    2-React-dom:
+        npm install react-router-dom
+    3-Tailwind css:
+        npm install tailwindcss @tailwindcss/vite
+    4-autoprefixer:
+        npm install autoprefixer
+    5-Axios:
+        npm install axios
+    6-postcss:
+        npm install postcss
+    5-Tailwind css Animated:
+        npm install -D tailwindcss-animated

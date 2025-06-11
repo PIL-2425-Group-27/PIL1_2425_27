@@ -15,13 +15,15 @@ import RideDetails from './pages/RideDetails';
 import SearchRides from './pages/SearchRides';
 import Support from './pages/Support';
 import Tracking from './pages/Tracking';
-
-
+import Landing from './pages/LandingPage';
+import RoleChoice from './pages/RoleChoice';
+let loggedIn = true;
+let page =loggedIn?<Home/>:<Landing/>
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={page} />
         <Route path="/Chat" element={<Chat />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Billing" element={<Billing />} />
@@ -37,6 +39,7 @@ function App() {
         <Route path="/SearchRides" element={<SearchRides />} />
         <Route path="/Support" element={<Support />} />
         <Route path="/Tracking" element={<Tracking />} />
+        <Route path="/RoleChoice" element={<RoleChoice />} />
       </Routes>
     </BrowserRouter>
   );

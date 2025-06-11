@@ -1,0 +1,14 @@
+
+function Title(props) {
+    let floating = props.floating==true? 'absolute':'';
+   return(
+    <>
+    <h1 className={`top-[2vh] text-2xl  font-bold mt-2 ${floating}`}>
+    {props.content}
+    </h1>
+    <p
+    className="text-2sm text-gray-400" 
+    >{props.subContent}</p>
+    </>
+   ) ;
+}export default Title

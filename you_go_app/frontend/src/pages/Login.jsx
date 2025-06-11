@@ -1,23 +1,51 @@
 import { useState } from "react";
+import Button from "../components/Button";
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from "axios"
+
 function Login() {
     const [visible, setvisible] = useState(false)
+
+    // login handler function
+    const login = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const res = await axios.get(
+                    "https://www.googleapis.com/oauth2/v3/userinfo",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${tokenResponse.access_token}`,
+                        }
+                    }
+                );
+                console.log(res.data.email);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    });
     return (
         <>
-            <div className="w-full h-screen bg-white flex flex-col items-center justify-evenly md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
+            <div className="w-full h-screen bg-white flex flex-col items-center justify-evenly animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
 
                 <div className="flex flex-row items-start px-2.5 absolute top-12 left-3">
-                    <a href="/"><img
-                        className="w-6 aspect-square"
-                        src="./src/assets/icons/left-arrow.svg"
-                        alt="return" />
+                    <a
+                        className="flex flex-row text-sm font-bold"
+                        href="/"><img
+                            className="w-5 aspect-square"
+                            src="./src/assets/icons/left-arrow.svg"
+                            alt="return" />Retour
                     </a>
+                </div>
+                <div className="w-full h-fit pl-10 flex flex-row items-center justify-start">
+                    <h1 className="text-4xl ">Connexion</h1>
                 </div>
                 <form
                     className="w-full h-fit flex flex-col items-center gap-3.5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
                     action=""
                     method="post"
                 >
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             className=""
                             placeholder="E-mail ou téléphone"
@@ -28,7 +56,7 @@ function Login() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-blue-300">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
                             placeholder="Mot de passe"
                             type={visible ? 'text' : 'password'}
@@ -47,9 +75,12 @@ function Login() {
                     <button
                         disabled
                         type="submit"
-                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-blue-300"
+                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffdc74]"
                     >Se connecter
                     </button>
+                    <p>ou</p>
+                    <Button onClick={() => login()} text={"Continuer avec"} textCol={'text-gray-500'} bg={'bg-gray-100'} icon={'./src/assets/icons/google.svg'} />
+
                     <p
                         className="my-9">
                         Vous n'avez pas avez de compte?
