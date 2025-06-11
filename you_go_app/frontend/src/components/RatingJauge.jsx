@@ -1,5 +1,5 @@
 function RTJauge(props) {
-    let floating = props.floating==true? 'absolute':'';
+    let floating = props.rated==true? '':'hidden';
    return(
     <>
     <h1 className={`top-[4vh] text-2xl  font-bold mt-2 ${floating}`}>

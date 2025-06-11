@@ -17,6 +17,7 @@ import Support from './pages/Support';
 import Tracking from './pages/Tracking';
 import Landing from './pages/LandingPage';
 import RoleChoice from './pages/RoleChoice';
+import ForgotPassword from './pages/ForgotPassword';
 let active = true;
 let page =active?<Home/>:<Landing/>
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Route path="/Support" element={<Support />} />
         <Route path="/Tracking" element={<Tracking />} />
         <Route path="/RoleChoice" element={<RoleChoice />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword/>} />
       </Routes>
     </BrowserRouter>
   );

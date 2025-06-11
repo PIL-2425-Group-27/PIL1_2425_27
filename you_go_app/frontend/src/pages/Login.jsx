@@ -72,6 +72,9 @@ function Login() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
+                    <p className="w-9/12 text-right text-sm text-blue-400 mr-2">
+                        <a href="/ForgotPassword">Mot de passe oublié</a>
+                    </p>
                     <button
                         disabled
                         type="submit"
