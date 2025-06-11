@@ -55,11 +55,11 @@ function Landing() {
                     <Button text={'Creer un compte'} bg={'bg-[#ffcb74]'} />
                     <p
                         className="my-5 text-gray-600">
-                        Vous n'avez pas avez de compte?
+                        Vous avez déjà un compte?
                         <a
-                            href="/Register"
+                            href="/Login"
                             className="text-blue-400 mx-1">
-                            S'inscrire
+                            Se connecter
                         </a>
                     </p>
                 </div>

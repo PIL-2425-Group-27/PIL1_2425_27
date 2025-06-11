@@ -17,8 +17,8 @@ import Support from './pages/Support';
 import Tracking from './pages/Tracking';
 import Landing from './pages/LandingPage';
 import RoleChoice from './pages/RoleChoice';
-let loggedIn = true;
-let page =loggedIn?<Home/>:<Landing/>
+let active = true;
+let page =active?<Home/>:<Landing/>
 function App() {
   return (
     <BrowserRouter>
