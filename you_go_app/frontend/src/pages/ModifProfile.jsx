@@ -3,7 +3,7 @@ import Option from "../components/OptionItem";
 import Photo from "../components/Photo";
 import Title from "../components/Title";
 
-function Profile() {
+function ModifProfile() {
     let fn = 'John'
     let ln = "DOE"
     let statut = 'Passager'
@@ -25,10 +25,10 @@ function Profile() {
                     <Option icon={'./src/assets/icons/hide.svg'} content={'Themes'}/>
                     <Option icon={'./src/assets/icons/hide.svg'} content={'Historique des trajets'} link={'/History'}/>
                 </div>
-                <Button text={"Se deconnecter"} bg={'bg-red-300'} icon={"./src/assets/icons/logout.svg"} submitted={true} link={'/login'}/>
+                <Button text={"Se deconnecter"} bg={'bg-red-400'} icon={"./src/assets/icons/logout.svg"} submitted={true} link={'/login'}/>
             </div>
         </>
     );
 }
 
-export default Profile;
+export default ModifProfile;

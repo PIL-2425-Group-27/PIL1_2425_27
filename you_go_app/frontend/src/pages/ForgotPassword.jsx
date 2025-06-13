@@ -1,13 +1,37 @@
 import { useState } from "react";
 import Button from "../components/Button";
-
+import isValid from "../functions/entryCheck";
 function ForgotPassword() {
-    const [visible, setvisible] = useState(false)
+    const [border, setBorder] = useState('border-gray-200')
+    const [value, setValue] = useState('')
+    const [submitted, setSubmitted] = useState(false);
+    const login = (e) => {
+        e.preventDefault();
+        fetch(
+            'https://jsonplaceholder.typicode.com/todos',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    value,
+                    completed: false
+                })
+            }
+        )
+            .then(response => response.json())
+            .then(() => console.log("Submitted successfully"))
+            .then(() => setSubmitted(prevSubmitted => true))
+            .then(json => console.log(json))
+            .catch(e => {
+                console.log("failed")
+            })
+    }
+    // /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/
+    //  /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/
     return (
         <>
             <div className="w-full h-screen bg-white flex flex-col items-center justify-center gap-[4vh] animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
 
-                <div className="flex flex-row items-start px-2.5 absolute top-12 left-3">
+                <div className="flex flex-row items-start px-2.5 absolute top-[3vh] left-[2vw]">
                     <a
                         className="flex flex-row text-sm font-bold"
                         href="/Login"><img
@@ -29,23 +53,26 @@ function ForgotPassword() {
                 </i>
                 <form
                     className="w-full h-fit flex flex-col items-center gap-5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
-                    action=""
                     method="post"
+                    onSubmit={login}
                 >
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-3 ${border}`}>
                         <input
-                            className=""
                             placeholder="E-mail ou téléphone"
                             type="text"
                             name="contact"
                             id="contact"
                             required
                             autoComplete="true"
+                            onChange={(e) => {
+                                setValue(e.target.value)
+                                console.log('changed',e.target.value)
+                                setBorder(isValid(e.target.value)?'border-green-200':'border-red-200')
+                            }}
                         />
                     </div>
-                    
-                
-                    <Button onClick={() => login()} text={"Suivant"} textCol={'text-white'} bg={'bg-[#ffcd74]'} type={'submit'} />
+                    {/*onClick={() => login()}  link={'/Verification'}*/}
+                    <Button text={"Suivant"} textCol={'text-white'} bg={'bg-[#ffcd74]'} type={'submit'} submitted={submitted} link={'/Verification'} />
                 </form>
 
             </div>

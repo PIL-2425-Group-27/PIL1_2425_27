@@ -52,7 +52,7 @@ function Landing() {
                         alt="" />
                 </div>
                 <div className='absolute bottom-[4vh] w-full flex flex-col items-center animate-fade animate-delay-4200'>
-                    <Button text={'Creer un compte'} bg={'bg-[#ffcb74]'} />
+                    <Button text={'Creer un compte'} bg={'bg-[#ffcb74]'} submitted={true} link={'/Register'}/>
                     <p
                         className="my-5 text-gray-600">
                         Vous avez déjà un compte?

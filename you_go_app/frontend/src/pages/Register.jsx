@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios"
 import Button from "../components/Button";
+import isValid from "../functions/entryCheck";
+
 function Register() {
+    const [border, setBorder] = useState('border-gray-200')
     const [visible1, setvisible1] = useState(false)
     const [visible2, setvisible2] = useState(false)
     const login = useGoogleLogin({
@@ -23,22 +26,13 @@ function Register() {
 }});
     return (
         <>
-            <div className="w-full h-screen bg-white flex flex-col items-center justify-evenly animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
+            <div className="w-full h-screen bg-white flex flex-col items-center justify-center animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
 
-                <div className="flex flex-row items-start px-2.5 absolute top-12 left-3">
-                    <a
-                        className="flex flex-row text-sm font-bold"
-                        href="/"><img
-                            className="w-5 aspect-square"
-                            src="./src/assets/icons/left-arrow.svg"
-                            alt="return" />Retour
-                    </a>
-                </div>
-                <div className="w-full h-full px-10 flex flex-row items-center justify-start">
+                <div className="w-full h-[10em] px-10 flex flex-row items-center justify-start">
                     <h1 className="text-4xl ">Inscription</h1>
                 </div>
                 <form
-                    className="w-full h-fit flex flex-col items-center gap-3.5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
+                    className="w-full h-fit flex flex-col items-center pt-[2vh] gap-[1vh] text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
                     action=""
                     method="post"
                 >
@@ -61,7 +55,7 @@ function Register() {
                             autoComplete="true"
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
                         <input
                             className=""
                             placeholder="E-mail"
@@ -70,9 +64,12 @@ function Register() {
                             id="email"
                             required
                             autoComplete="true"
+                            onChange={(e) => {
+                                setBorder(isValid(e.target.value)?'border-green-200':'border-red-200')
+                            }}
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
                         <input
                             className=""
                             placeholder="Numero de telephone"
@@ -81,9 +78,12 @@ function Register() {
                             id="phone"
                             required
                             autoComplete="true"
+                            onChange={(e) => {
+                                setBorder(isValid(e.target.value)?'border-green-200':'border-red-200')
+                            }}
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200">
                         <input
                             placeholder="Mot de passe"
                             type={visible1 ? 'text' : 'password'}
