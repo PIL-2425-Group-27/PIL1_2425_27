@@ -6,7 +6,7 @@ function Chat() {
     return (
         <>
             <div
-                className='w-full h-screen bg-green-300 relative'
+                className='w-full h-screen bg-white relative'
             >
               <ChatMenu/>  
               <Chatbox/>  
