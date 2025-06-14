@@ -1,27 +1,67 @@
 import Button from "../components/Button";
-import Option from "../components/OptionItem";
-import Photo from "../components/Photo";
+import NotificationItem from "../components/NotificationItem";
 import Return from "../components/Return";
 import Title from "../components/Title";
 
 function History() {
-    let fn = 'John'
-    let ln = "DOE"
-    let statut = 'Passager'
+    const historyList = [
+        {
+            id:0,
+            content:'Votre requete a ete vue par 55 personnes.',
+            time:'12:13',
+            link:'',
+        },
+        {
+            id:1,
+            content:'Votre trajet a duré 35 minutes.',
+            time:'11:58',
+            link:'',
+        },
+        {
+            id:2,
+            content:'Veuillez noter votre conducteur',
+            time:'11:45',
+            link:'',
+        },
+        {
+            id:3,
+            content:'Votre conducteur vient dans 15 minutes',
+            time:'11:20',
+            link:'',
+        },
+        {
+            id:4,
+            content:'Vous avez un match avec un conducteur. Visitez son profil',
+            time:'10:30',
+            link:'',
+        },
+        {
+            id:5,
+            content:'Placeholder',
+            time:'10:07',
+            link:'',
+        },
+        {
+            id:6,
+            content:'Placeholder',
+            time:'06:05',
+            link:'',
+        },
+    ]
+    
     return (
         <>
             <div
-                className="w-full h-screen bg-white flex flex-col items-center justify-center gap-[2vh] py-10"
+                className="w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
             >
                 <Return link={'/Profile'}/>
-                <Title content={'Historique des trajets'} floating={false}/>
-                <div className="w-full flex flex-col gap-4 py-8">
-                    <Option icon={'./src/assets/icons/hide.svg'} content={'Modifier le profil'} link={'/ModifProfile'}/>
-                    <Option icon={'./src/assets/icons/hide.svg'} content={'Changer de mot de passe'} link={'/ChangePassword'}/>
-                    <Option icon={'./src/assets/icons/hide.svg'} content={'Themes'}/>
-                    <Option icon={'./src/assets/icons/hide.svg'} content={'Historique des trajets'} link={'/History'}/>
+                <Title content={'Notifications'} floating={true} />
+                <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
+                    {historyList.map((notification)=>
+                    <NotificationItem key ={notification.id}  pos={notificationList.indexOf(notification)} />
+                )}
+
                 </div>
-                <Button text={"Se deconnecter"} bg={'bg-red-400'} icon={"./src/assets/icons/logout.svg"} submitted={true} link={'/login'}/>
             </div>
         </>
     );

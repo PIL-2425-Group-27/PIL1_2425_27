@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import Button from "../components/Button";
+import Return from "../components/Return";
 
 function ChangePassword() {
     const [visible, setvisible] = useState(false)
@@ -43,6 +44,7 @@ function ChangePassword() {
         <>
             <div className="w-full h-screen bg-white flex flex-col items-center justify-evenly animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
 
+                <Return link={'/Profile'}/>
                 <div className="w-full h-fit pl-10 flex flex-row items-center justify-start">
                     <h1 className="text-4xl ">Changer le Mot de passe</h1>
                 </div>
