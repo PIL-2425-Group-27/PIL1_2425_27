@@ -1,66 +1,71 @@
 import Button from "../components/Button";
-import NotificationItem from "../components/NotificationItem";
+import HistoryItem from "../components/HistoryItem";
 import Return from "../components/Return";
 import Title from "../components/Title";
 
 function History() {
     const historyList = [
         {
-            id:0,
-            content:'Votre requete a ete vue par 55 personnes.',
-            time:'12:13',
-            link:'',
+            id: 0,
+            content: 'Votre requete a ete vue par 55 personnes.',
+            duration: '30 min',
+            link: '',
         },
         {
-            id:1,
-            content:'Votre trajet a duré 35 minutes.',
-            time:'11:58',
-            link:'',
+            id: 1,
+            content: 'Votre trajet a duré 35 minutes.',
+            duration: '45 min',
+            link: '',
         },
         {
-            id:2,
-            content:'Veuillez noter votre conducteur',
-            time:'11:45',
-            link:'',
+            id: 2,
+            content: 'Veuillez noter votre conducteur',
+            duration: '25 min',
+            link: '',
         },
         {
-            id:3,
-            content:'Votre conducteur vient dans 15 minutes',
-            time:'11:20',
-            link:'',
+            id: 3,
+            content: 'Votre conducteur vient dans 15 minutes',
+            duration: '50 min',
+            link: '',
         },
         {
-            id:4,
-            content:'Vous avez un match avec un conducteur. Visitez son profil',
-            time:'10:30',
-            link:'',
+            id: 4,
+            content: 'Vous avez un match avec un conducteur. Visitez son profil',
+            duration: '1 heure',
+            link: '',
         },
         {
-            id:5,
-            content:'Placeholder',
-            time:'10:07',
-            link:'',
+            id: 5,
+            content: 'Placeholder',
+            duration: '10 min',
+            link: '',
         },
         {
-            id:6,
-            content:'Placeholder',
-            time:'06:05',
-            link:'',
+            id: 6,
+            content: 'Placeholder',
+            duration: '39 min',
+            link: '',
         },
     ]
-    
+
     return (
         <>
             <div
-                className="w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
+                className="relative w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
             >
-                <Return link={'/Profile'}/>
-                <Title content={'Notifications'} floating={true} />
+                <Return link={'/Profile'} />
+                <Title content={'History'} floating={true} />
                 <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
-                    {historyList.map((notification)=>
-                    <NotificationItem key ={notification.id}  pos={notificationList.indexOf(notification)} />
-                )}
+                    {historyList.map((historyItem) =>
+                        <HistoryItem key={historyItem.id} content={historyItem.content.length <= 45 ? historyItem.content : historyItem.content.slice(0, 45) + '...'} duration={historyItem.duration} />
+                    )}
 
+                </div>
+                <div className="fixed bottom-[8vh] right-[8vw] w-[8vh] aspect-square rounded-full bg-red-400 flex flex-col items-center justify-center">
+                    <img
+                        className="w-1/2"
+                        src="./src/assets/icons/delete2.svg" />
                 </div>
             </div>
         </>
