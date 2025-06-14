@@ -24,6 +24,7 @@ import ModifProfile from './pages/ModifProfile';
 import History from './pages/History';
 import PasswordChanged from './pages/PasswordChanged';
 import PrivateRoute from './utils/PrivateRoute';
+import ChatSupportClient from './pages/ChatSupportClient';
 let active = true;
 let page = active ? <Home /> : <Landing />
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/RoleChoice" element={<RoleChoice />} />
           <Route path="/ModifProfile" element={<ModifProfile />} />
           <Route path="/History" element={<History />} />
+          <Route path="/ChatSupportClient" element={<ChatSupportClient />} />
         </Route>
       </Routes>
     </BrowserRouter>
