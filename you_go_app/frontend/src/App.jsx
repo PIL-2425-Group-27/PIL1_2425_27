@@ -30,38 +30,40 @@ let page = active ? <Home /> : <Landing />
 function App() {
   const isAuthenticated = false;
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/Verification" element={<Verification />} />
-        <Route path="/PasswordChanged" element={<PasswordChanged />} />
-        <Route path="/ChangePassword" element={<ChangePassword />} />
-        {/* Private routes */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={page} />
-          <Route path="/Chat" element={<Chat />} />
-          <Route path="/Profile" element={<Profile />} />
-          <Route path="/Billing" element={<Billing />} />
-          <Route path="/FAQ" element={<FAQ />} />
-          <Route path="/KYC" element={<KYC />} />
-          <Route path="/Notifications" element={<Notifications />} />
-          <Route path="/PublishOffer" element={<PublishOffer />} />
-          <Route path="/Settings" element={<Settings />} />
-          <Route path="/PublishRequest" element={<PublishRequest />} />
-          <Route path="/RideDetails" element={<RideDetails />} />
-          <Route path="/SearchRides" element={<SearchRides />} />
-          <Route path="/Support" element={<Support />} />
-          <Route path="/Tracking" element={<Tracking />} />
-          <Route path="/RoleChoice" element={<RoleChoice />} />
-          <Route path="/ModifProfile" element={<ModifProfile />} />
-          <Route path="/History" element={<History />} />
-          <Route path="/ChatSupportClient" element={<ChatSupportClient />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div className=''>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path="/Verification" element={<Verification />} />
+          <Route path="/PasswordChanged" element={<PasswordChanged />} />
+          <Route path="/ChangePassword" element={<ChangePassword />} />
+          {/* Private routes */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={page} />
+            <Route path="/Chat" element={<Chat />} />
+            <Route path="/Profile" element={<Profile />} />
+            <Route path="/Billing" element={<Billing />} />
+            <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/KYC" element={<KYC />} />
+            <Route path="/Notifications" element={<Notifications />} />
+            <Route path="/PublishOffer" element={<PublishOffer />} />
+            <Route path="/Settings" element={<Settings />} />
+            <Route path="/PublishRequest" element={<PublishRequest />} />
+            <Route path="/RideDetails" element={<RideDetails />} />
+            <Route path="/SearchRides" element={<SearchRides />} />
+            <Route path="/Support" element={<Support />} />
+            <Route path="/Tracking" element={<Tracking />} />
+            <Route path="/RoleChoice" element={<RoleChoice />} />
+            <Route path="/ModifProfile" element={<ModifProfile />} />
+            <Route path="/History" element={<History />} />
+            <Route path="/ChatSupportClient" element={<ChatSupportClient />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

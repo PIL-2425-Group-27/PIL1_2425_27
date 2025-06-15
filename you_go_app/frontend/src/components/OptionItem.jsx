@@ -8,7 +8,7 @@ function Option(props) {
                     <div
                         className="w-14 aspect-square rounded-full bg-[#d4d4d4] flex flex-col items-center justify-center">
                         <img
-                            className="w-2/3 aspect-square"
+                            className={`w-2/3 aspect-square`}
                             src={props.icon}
                             alt="icon" />
                     </div>
