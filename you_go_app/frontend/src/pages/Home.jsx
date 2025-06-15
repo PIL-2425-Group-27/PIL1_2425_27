@@ -29,9 +29,16 @@ function Home() {
     return (
         <>
             <div className='relative w-full h-screen flex flex-col items-center animate-fade'>
-                <div className='w-full  bg-[#ffcd74] rounded-b-3xl px-[4vw] pt-[4vh] pb-[4vw] flex flex-col justify-center gap-[3vh]'>
+                <div className='relative w-full  bg-[#ffcd74] rounded-b-3xl px-[4vw] pt-[4vh] pb-[4vw] flex flex-col justify-center gap-[3vh]'>
                     <h1 className='text-3xl font-bold mt-8 text-white'>Bonjour {user}</h1>
-                    <a className='absolute top-[4vh] right-[2vh] text-3xl'>search</a>
+                    <a
+                        href='/SearchRides'
+                        className='absolute w-[10vw] aspect-square mt-8 top-[4vh] right-[2vh] flex flex-col items-center justify-center'>
+                        <img
+                            className='w-full'
+                            src="./src/assets/icons/search.svg"
+                            alt="search" />
+                    </a>
                     <Chart />
                 </div>
                 <div className='relative w-9/10 px-4 py-10 bg-[#e8e8e8] rounded-3xl mt-9 flex flex-col'>

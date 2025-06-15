@@ -5,7 +5,7 @@ function Navbar(props) {
     let active = props.active;
     return (
         <>
-            <div className='absolute bottom-[2vh] w-full flex flex-col items-center justify-center'>
+            <div className='fixed bottom-[2vh] w-full flex flex-col items-center justify-center'>
                 <nav className=' text-white w-[95%] bg-white rounded-2xl shadow-md shadow-gray-200 p-4 flex flex-col items-center justify-center'>
                     <ul className='w-full flex flex-row items-center justify-evenly'>
                         <li><NavItem icon={'./src/assets/icons/home.svg'} content={'Home'} link={'/'} active={active == 'home'}/></li>

@@ -1,9 +1,20 @@
 import Navbar from "../components/Navbar";
+import Return from "../components/Return";
+import SearchBar from "../components/SearchBar";
+
 function SearchRides() {
     return (
         <>
-            <h1 className='text-green-400'>Search rides Page</h1>
-            <Navbar/>
+        <div>
+            <Return/>
+            <SearchBar />
+            <div 
+            className="w-full"
+            >
+
+            </div>
+        </div>
+            
         </>
     );
 }
