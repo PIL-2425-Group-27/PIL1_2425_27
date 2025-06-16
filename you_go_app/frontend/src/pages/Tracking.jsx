@@ -4,13 +4,18 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useEffect, useState } from 'react';
 import Navbar from "../components/Navbar";
+import MarkerIcon from '../assets/icons/marker1.png'; // adjust path as needed
+
 
 
 // Fix Leaflet's default icon issue in React
 delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
+
+const icon = new L.Icon({
+  iconUrl: MarkerIcon,
+  iconSize: [38, 38], // width, height
+  iconAnchor: [19, 38], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -38], // point from which the popup should open relative to the iconAnchor
 });
 
 function Tracking() {
@@ -36,10 +41,13 @@ function Tracking() {
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        <Marker position={position}>
-                            <Popup>Your current location</Popup>
+                        <Marker position={position} icon={icon}>
+                            <Popup>Votre position actuelle</Popup>
                         </Marker>
                     </MapContainer>
+                </div>
+                <div className=' absolute z-20 w-[90%] h-16 bg-red-300 '>
+
                 </div>
                 <Navbar />
             </div>
