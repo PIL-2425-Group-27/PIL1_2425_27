@@ -4,6 +4,7 @@ import Return from "../components/Return";
 import Title from "../components/Title";
 
 function Notifications() {
+    let theme= true
     const notificationList = [
         {
             id:0,
@@ -52,13 +53,13 @@ function Notifications() {
     return (
         <>
             <div
-                className="w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
+                className={`w-full h-screen ${theme == false ? 'bg-white' : 'bg-[#2d2d2d] text-white'} flex flex-col items-center justify-evenly py-10`}
             >
                 <Return link={'/Profile'}/>
                 <Title content={'Notifications'} floating={true} />
                 <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
                     {notificationList.map((notification)=>
-                    <NotificationItem key ={notification.id}  pos={notificationList.indexOf(notification)}  content = {notification.content.length <= 45?notification.content:notification.content.slice(0,45)+'...'} time = {notification.time} notifs = {notificationList}/>
+                    <NotificationItem key ={notification.id}  pos={notificationList.indexOf(notification)}  content = {notification.content.length <= 45?notification.content:notification.content.slice(0,45)+'...'} time = {notification.time} notifs = {notificationList} theme={theme}/>
                 )}
 
                 </div>

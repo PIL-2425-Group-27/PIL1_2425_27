@@ -4,6 +4,7 @@ import Return from "../components/Return";
 import Title from "../components/Title";
 
 function History() {
+    let theme = true
     const historyList = [
         {
             id: 0,
@@ -52,10 +53,10 @@ function History() {
     return (
         <>
             <div
-                className="relative w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
+                className={`relative w-full h-screen ${theme == false ? 'bg-white' : 'bg-[#2d2d2d] text-white'} flex flex-col items-center justify-evenly py-10`}
             >
-                <Return link={'/Profile'} />
-                <Title content={'History'} floating={true} />
+                <Return link={'/Profile'} theme={theme}/>
+                <Title content={'Historique'} floating={true} />
                 <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
                     {historyList.map((historyItem) =>
                         <HistoryItem key={historyItem.id} content={historyItem.content.length <= 45 ? historyItem.content : historyItem.content.slice(0, 45) + '...'} duration={historyItem.duration} />

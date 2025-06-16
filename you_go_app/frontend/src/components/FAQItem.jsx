@@ -5,7 +5,7 @@ function FAQItem(props) {
                 className='w-[95%] h-[10vh] rounded-xl px-4 flex flex-row items-center justify-start gap-3'
             >
                 <div
-                    className='w-[8vw] aspect-square bg-[url(./src/assets/icons/faq.svg)] bg-no-repeat bg-center bg-cover'
+                    className={`w-[8vw] aspect-square bg-[url(./src/assets/icons/faq.svg)] bg-no-repeat bg-center bg-cover ${props.theme==false?'':'invert-100'}`}
                 >
 
                 </div>

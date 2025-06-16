@@ -4,6 +4,7 @@ import Title from "../components/Title";
 FAQItem
 
 function FAQ() {
+    let theme =true
     const faqList = [
         {
             id: 0,
@@ -45,13 +46,13 @@ function FAQ() {
     return (
         <>
             <div
-                className="w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
+                className={`w-full h-screen ${theme==false?'bg-[#e8e8e8]':'bg-[#2d2d2d] text-white'} flex flex-col items-center justify-evenly py-10`}
             >
-                <Return link={'/Profile'} />
+                <Return link={'/Profile'} theme={theme}/>
                 <Title content={'FAQs'} floating={true} />
                 <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
                     {faqList.map((faqItem) =>
-                        <FAQItem key={faqItem.id} question={faqItem.question.length <= 45 ? faqItem.question : faqItem.question.slice(0, 45) + '...'} answer={faqItem.answer} />
+                        <FAQItem key={faqItem.id} question={faqItem.question.length <= 45 ? faqItem.question : faqItem.question.slice(0, 45) + '...'} answer={faqItem.answer} theme={theme}/>
                     )}
 
                 </div>

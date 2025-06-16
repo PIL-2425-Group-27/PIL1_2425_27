@@ -18,7 +18,7 @@ function Chart() {
                             label:'Temps de\ntrajet(min)'
                         }]}
                         borderRadius={10}
-                        colors={['#ffda9b']}
+                        colors={['#000']}
                         width={w}
                         height={150}
                         xAxis={[{ data: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'] }]}

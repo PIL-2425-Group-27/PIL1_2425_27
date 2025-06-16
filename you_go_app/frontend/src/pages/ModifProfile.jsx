@@ -19,6 +19,7 @@ function ModifProfile() {
             reader.readAsDataURL(file);
         }
     };
+    let theme = true
     let fn = 'John'
     let ln = "DOE"
     let statut = 'Passager'
@@ -27,21 +28,21 @@ function ModifProfile() {
     return (
         <>
             <div
-                className="w-full h-screen bg-white flex flex-col items-center justify-evenly py-10"
+                className={`w-full h-screen ${theme==false?'bg-white':'bg-[#2d2d2d] text-white'} flex flex-col items-center justify-evenly py-10`}
             >
-                <Return link={'/Profile'} />
+                <Return link={'/Profile'} theme={theme}/>
                 <Title content={'Modifier le Profil'} floating={true} />
                 <form
                     className="w-full h-max flex flex-col items-center">
                     <div
-                        className=" relative w-6/7 rounded-xl py-4  bg-[#e8e8e8] flex flex-col items-center"
+                        className={`relative w-6/7 rounded-xl py-4  ${theme==false?'bg-[#e8e8e8]':'bg-[#333333] text-white'} flex flex-col items-center`}
                     >
                         <div className="absolute top-5 right-5 w-1/10 aspect-square bg-center bg-cover bg-[url(./src/assets/icons/edit.svg)]"></div>
                         <div
                             style={{ backgroundImage: `url(${picture})` }}
                             className={`w-[30vw] aspect-square rounded-full bg-center bg-cover`}>
                         </div>
-                        <label className="w-fit px-[4vw] py-[2vh] text-xl mt-[4vh] font-semibold rounded-xl bg-white text-center">
+                        <label className={`w-fit px-[4vw] py-[2vh] text-xl mt-[4vh] font-semibold rounded-xl ${theme==false?'bg-white':'bg-[#5e5e5e] text-white'} text-center`}>
                             Choisir un fichier
                             <input
                                 className="text-[0px]"
@@ -53,7 +54,7 @@ function ModifProfile() {
                                 accept="image/*" />
                         </label>
                     </div>
-                    <div className="w-6/7 flex flex-col items-center py-[4vh] gap-[1.5vh] [&_input]:border-b-1 [&_input]:text-xl [&_input]:p-2 [&_input]:outline-none [&_input]: [&_label]:font-semibold [&_select]:c-none [&_select]:focus:outline-none">
+                    <div className={`w-6/7 flex flex-col items-center py-[4vh] gap-[1.5vh] [&_input]:${theme==false?'bg-white':'bg-[#2d2d2d] text-white'}  [&_input]:border-b-1 [&_input]:text-xl [&_input]:p-2 [&_input]:outline-none [&_input]: [&_label]:font-semibold [&_select]:c-none [&_select]:focus:outline-none`}>
                         <div className="w-8/9 flex flex-col">
                             <label htmlFor="fn">Prénom</label>
                             <input

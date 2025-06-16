@@ -4,8 +4,9 @@ import Navbar from '../components/Navbar';
 
 function Home() {
     let user = "<User>"
-    let action = 'Publier une offre'
-    let link = '/PublishOffer'
+    let statut = 'passager'
+    let action = statut=='passager'?'Publier une demande':'Publier une offre'
+    let link = statut=='passager'?'/PublishRequest':'/PublishOffer'
     const historyList = [
         {
             id: 0,
@@ -47,7 +48,7 @@ function Home() {
                         <div
                             key={index}
                             className='flex flex-row items-center gap-2 mt-4'>
-                            <div className='w-6 aspect-square bg-amber-300'>ii</div>
+                            <div className='w-4 h-4 bg-[url(./src/assets/icons/checked.svg)] bg-center bg-contain'></div>
                             <h1 className='text-2xl'>
                                 <span className='font-semibold'>
                                     {item.content}

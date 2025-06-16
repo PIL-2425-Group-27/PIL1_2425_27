@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useRef, useMemo } from "react";
 import Button from "../components/Button";
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios"
 import isValid from "../functions/entryCheck";
 
 function Login() {
+    const form = useRef(null)
     const [border, setBorder] = useState('border-gray-200')
     const [visible, setvisible] = useState(false)
+    const [password, setPassword] = useState('');
+    const [contact, setContact] = useState('');
+    const [value, setValue] = useState('')
+    const [submitted, setSubmitted] = useState(false);
 
     // login handler function
     const login = useGoogleLogin({
@@ -26,6 +31,32 @@ function Login() {
             }
         }
     });
+
+    const checkValidity = useMemo(() => {
+        return password.trim() !== '' && contact.trim() !== '';
+    }, [password, contact]);
+
+    const send = (e) => {
+        e.preventDefault();
+        fetch(
+            'https://jsonplaceholder.typicode.com/todos',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    value,
+                    completed: false
+                })
+            }
+        )
+            .then(response => response.json())
+            .then(() => console.log("Submitted successfully"))
+            .then(() => setSubmitted(prev => { const newVal = !prev; return newVal }))
+            .then(json => console.log(submitted))
+            .catch(e => {
+                console.log("failed")
+            })
+    }
+
     return (
         <>
             <div className="w-full h-screen bg-white flex flex-col items-center justify-evenly animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
@@ -34,9 +65,10 @@ function Login() {
                     <h1 className="text-4xl ">Connexion</h1>
                 </div>
                 <form
+                    ref={form}
                     className="w-full h-fit flex flex-col items-center gap-3.5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
                     action=""
-                    method="post"
+                    onSubmit={send}
                 >
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
                         <input
@@ -48,7 +80,8 @@ function Login() {
                             required
                             autoComplete="true"
                             onChange={(e) => {
-                                setBorder(isValid(e.target.value)?'border-green-200':'border-red-200')
+                                setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200')
+                                setContact(e.target.value)
                             }}
                         />
                     </div>
@@ -60,6 +93,9 @@ function Login() {
                             id="password"
                             required
                             autoComplete="true"
+                            onChange={(e) => {
+                                setPassword(e.target.value)
+                            }}
                         />
                         <input
                             name="checkbox"
@@ -72,7 +108,7 @@ function Login() {
                         <a href="/ForgotPassword">Mot de passe oublié</a>
                     </p>
                     <button
-                        disabled
+                        disabled={!checkValidity}
                         type="submit"
                         className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffdc74]"
                     >Se connecter
@@ -96,4 +132,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Login;   

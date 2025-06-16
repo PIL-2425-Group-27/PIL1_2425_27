@@ -5,7 +5,7 @@ function Notification(props) {
             <a
                 className={` top-[2vh] right-[2vh] ${floating}`}
                 href={props.link}>
-                <div className={`w-[12vw] max-w-14 aspect-square rounded-full flex flex-row items-center justify-center bg-[#d4d4d4] ${props.icon}`}>
+                <div className={`w-[12vw] max-w-14 aspect-square rounded-full flex flex-row items-center justify-center ${props.theme==false?'bg-[#d4d4d4]':'bg-none invert-100'} ${props.icon}`}>
                     <img
                         className={`w-2/3 aspect-square`}
                         src={props.icon} />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useMemo } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios"
 import Button from "../components/Button";
@@ -8,22 +8,58 @@ function Register() {
     const [border, setBorder] = useState('border-gray-200')
     const [visible1, setvisible1] = useState(false)
     const [visible2, setvisible2] = useState(false)
-    const login = useGoogleLogin({
-        onSuccess: async (tokenResponse) =>{
+    const [confpwd, setConfpwd] = useState('');
+    const [password, setPassword] = useState('');
+    const [fir_name, setFir_name] = useState('');
+    const [las_name, setLas_name] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [value, setValue] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+    // Handle google registration
+    const register = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
             try {
                 const res = await axios.get(
                     "https://www.googleapis.com/oauth2/v3/userinfo",
                     {
-                    headers: {
-                        Authorization: `Bearer ${tokenResponse.access_token}`,
-                    },
-                }
+                        headers: {
+                            Authorization: `Bearer ${tokenResponse.access_token}`,
+                        },
+                    }
                 );
-               console.log(res.data); 
+                console.log(res.data);
             } catch (error) {
                 console.log(error)
             }
-}});
+        }
+    });
+    const checkValidity = useMemo(() => {
+        return fir_name.trim() !=='' && las_name.trim() !=='' && password.trim() !== '' && confpwd.trim() !=='' && email.trim() !=='' && phone.trim() !=='';
+    }, [fir_name,las_name,password,confpwd,email,phone]);
+    
+    // Handle login by email
+    const send = (e) => {
+        e.preventDefault();
+        fetch(
+            'https://jsonplaceholder.typicode.com/todos',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    value,
+                    completed: false
+                })
+            }
+        )
+            .then(response => response.json())
+            .then(() => console.log("Submitted successfully"))
+            .then(() => setSubmitted(prev => { const newVal = !prev; return newVal }))
+            .then(json => console.log(submitted))
+            .catch(e => {
+                console.log("failed:"+e)
+            })
+    }
+
     return (
         <>
             <div className="w-full h-screen bg-white flex flex-col items-center justify-center animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
@@ -34,7 +70,7 @@ function Register() {
                 <form
                     className="w-full h-fit flex flex-col items-center pt-[2vh] gap-[1vh] text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
                     action=""
-                    method="post"
+                    onSubmit={send}
                 >
                     <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
                         <input
@@ -43,6 +79,7 @@ function Register() {
                             name="fist_name"
                             id="firstname"
                             autoComplete="true"
+                            onChange={setFir_name}
                         />
                     </div>
                     <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
@@ -53,6 +90,8 @@ function Register() {
                             id="lastname"
                             required
                             autoComplete="true"
+                            onChange={setLas_name}
+
                         />
                     </div>
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
@@ -65,7 +104,8 @@ function Register() {
                             required
                             autoComplete="true"
                             onChange={(e) => {
-                                setBorder(isValid(e.target.value)?'border-green-200':'border-red-200')
+                                setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200');
+                                setEmail
                             }}
                         />
                     </div>
@@ -79,7 +119,8 @@ function Register() {
                             required
                             autoComplete="true"
                             onChange={(e) => {
-                                setBorder(isValid(e.target.value)?'border-green-200':'border-red-200')
+                                setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200');
+                                setPhone
                             }}
                         />
                     </div>
@@ -91,6 +132,7 @@ function Register() {
                             id="password"
                             required
                             autoComplete="true"
+                            onChange={setPassword}
                         />
                         <input
                             name="checkbox"
@@ -107,6 +149,8 @@ function Register() {
                             id="confirmpwd"
                             required
                             autoComplete="true"
+                            onChange={setConfpwd}
+
                         />
                         <input
                             name="checkbox"
@@ -116,13 +160,13 @@ function Register() {
                         />
                     </div>
                     <button
-                        disabled
+                        disabled={!checkValidity}
                         type="submit"
                         className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffcd74]"
                     >S'inscrire
                     </button>
                     <p>ou</p>
-                    <Button onClick={() => login()} text={"Continuer avec"} textCol={'text-gray-500'} bg={'bg-gray-100'} icon = {'./src/assets/icons/google.svg'}/>
+                    <Button onClick={() => register()} text={"Continuer avec"} textCol={'text-gray-500'} bg={'bg-gray-100'} icon={'./src/assets/icons/google.svg'} />
                     <p
                         className="my-9">
                         Vous avez déjà un compte?

@@ -9,10 +9,10 @@ function HistoryItem(props) {
     return (
         <>
             <div
-                className='w-[95%] h-[10vh] rounded-xl px-4 bg-[#dedede] flex flex-row items-center justify-start gap-3'
+                className={`w-[95%] h-[10vh] rounded-xl px-4 ${props.theme==false?'bg-[#dedede]':'bg-[#1f1f1f] text-white'} flex flex-row items-center justify-start gap-3`}
             >
                 <div
-                    className='w-[8vw] aspect-square bg-[url(./src/assets/icons/clock.svg)] bg-no-repeat bg-center bg-cover'
+                    className={`w-[8vw] aspect-square bg-[url(./src/assets/icons/clock.svg)] ${props.theme==false?'':'invert-100'} bg-no-repeat bg-center bg-cover`}
                 >
 
                 </div>
