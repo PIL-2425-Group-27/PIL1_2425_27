@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>✅ Covoiturage confirmé</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f3f6fa; padding: 30px; color: #333; }
+    .container { background: white; border-radius: 8px; padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    h2 { color: #28a745; }
+    p { line-height: 1.6; }
+    .footer { font-size: 12px; color: #999; margin-top: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>✅ Votre covoiturage est confirmé</h2>
+    <p>Bonjour {{ user.first_name }},</p>
+    <p>Votre covoiturage avec <strong>{{ partenaire.first_name }}</strong> est confirmé !</p>
+    <p>📍 <strong>Trajet :</strong> {{ trajet.start_point }} → {{ trajet.end_point }} le <strong>{{ trajet.date_trajet }}</strong>.</p>
+    <p>Retrouvez tous les détails de votre trajet et commencez à discuter dès maintenant !</p>
+    <p>Bonne route avec YouGo 🚀</p>
+    <div class="footer">YouGo - Partageons les trajets autrement</div>
+  </div>
+</body>
+</html>

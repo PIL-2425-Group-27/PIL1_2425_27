@@ -9,7 +9,7 @@ function PublishOffer() {
         end_time: "",
         price_type: "",
         fixed_priced: "",
-        vehiculesmodel: "",
+        Vehiclesmodel: "",
 
     });
     const handleChange = (e) => {
