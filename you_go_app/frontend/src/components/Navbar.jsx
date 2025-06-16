@@ -1,27 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-function Navbar() {
+import NavItem from './NavItem'
+function Navbar(props) {
+    let active = props.active;
     return (
-        <nav className='bg-gray-800 text-white p-4'>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/Chat">Chat</a></li>
-                <li><a href="/Profile">Profile</a></li>
-                <li><a href="/Billing">Billing</a></li>
-                <li><a href="/FAQ">FAQ</a></li>
-                <li><a href="/KYC">KYC</a></li>
-                <li><a href="/Login">Login</a></li>
-                <li><a href="/Register">Register</a></li>
-                <li><a href="/Notifications">Notifications</a></li>
-                <li><a href="/PublishOffer">Publish Offer</a></li>
-                <li><a href="/Settings">Settings</a></li>
-                <li><a href="/PublishRequest">Publish Request</a></li>
-                <li><a href="/RideDetails">Ride Details</a></li>
-                <li><a href="/SearchRides">Search Rides</a></li>
-                <li><a href="/Support">Support</a></li>
-                <li><a href="/Tracking">Tracking</a></li>
-                <li><a href="/RoleChoice">Role Choice</a></li>
-            </ul>
-        </nav>
+        <>
+            <div className='fixed z-10 bottom-[2vh] w-full flex flex-col items-center justify-center'>
+                <nav className=' text-white w-[95%] bg-white rounded-2xl shadow-md shadow-gray-200 p-4 flex flex-col items-center justify-center'>
+                    <ul className='w-full flex flex-row items-center justify-evenly'>
+                        <li><NavItem icon={'./src/assets/icons/home.svg'} content={'Home'} link={'/'} active={active == 'home'}/></li>
+                        <li><NavItem icon={'./src/assets/icons/chat2.svg'} content={'Chat'} link={'/Chat'} active={active == 'chat'}/></li>
+                        <li><NavItem icon={'./src/assets/icons/user.svg'} content={'Profile'} link={'/Profile'} active={active == 'profile'}/></li>
+                        <li><NavItem icon={'./src/assets/icons/bill.svg'} content={'Billing'} link={'/Billing'} active={active == 'billing'}/></li>
+                        <li><NavItem icon={'./src/assets/icons/location.svg'} content={'Tracking'} link={'/Tracking'} active={active == 'tracking'}/></li>
+                    </ul>
+                </nav>
+            </div>
+        </>
     );
 } export default Navbar;
