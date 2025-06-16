@@ -1,11 +1,19 @@
-import Navbar from "../components/Navbar";
+import React from 'react'
+import ChatMenu from '../components/ChatMenu'
+import Chatbox from '../components/Chatbox'
+
 function Chat() {
     return (
         <>
-            <h1 className='text-green-400'>Chat Page</h1>
-            <Navbar/>
+            <div
+                className='w-full h-screen bg-white relative'
+            >
+              <ChatMenu/>  
+              <Chatbox/>  
+
+            </div>
         </>
-    );
+    )
 }
 
-export default Chat;
+export default Chat

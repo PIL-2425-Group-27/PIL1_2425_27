@@ -1,11 +1,9 @@
-import Navbar from "../components/Navbar";
+import React from 'react'
+
 function KYC() {
-    return (
-        <>
-            <h1 className='text-green-400'>KYC Page</h1>
-            <Navbar/>
-        </>
-    );
+  return (
+    <div>KYC</div>
+  )
 }
 
-export default KYC;
+export default KYC
