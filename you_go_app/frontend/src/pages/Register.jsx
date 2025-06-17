@@ -44,7 +44,7 @@ function Register() {
         }
     });
     const checkValidity = useMemo(() => {
-        return (fir_name.trim() !== '' && las_name.trim() !== '' && password.trim() !== '' && confpwd.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && (password == confpwd));
+        return (fir_name.trim() !== '' && las_name.trim() !== '' && user_name.trim() !== '' && password.trim() !== '' && confpwd.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && (password == confpwd));
     }, [fir_name, las_name, user_name, password, confpwd, email, phone]);
 
     // Handle login by email
