@@ -74,7 +74,9 @@ Cloner le repo
 3. Installer les dependances:
 ```bash
     npm install
+    npm install jspdf
 ```
+
 4. Lancer le projet:
 ```bash
     npm run dev
