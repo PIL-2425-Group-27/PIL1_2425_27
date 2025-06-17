@@ -3,7 +3,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios"
 import Button from "../components/Button";
 import isValid from "../functions/entryCheck";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import passwordSame from "../functions/passwordSame";
 
 function Register() {
@@ -35,6 +35,7 @@ function Register() {
                         },
                     }
                 );
+                setSubmitted(true);
                 console.log(res.data);
             } catch (error) {
                 console.log(error)
@@ -52,35 +53,28 @@ function Register() {
         }
     }, [submitted, navigate]);
 
+
+
     const send = (e) => {
         e.preventDefault();
         setLoading(true); // start loading
 
-        fetch(
-            'https://jsonplaceholder.typicode.com/todos',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    value,
-                    completed: false
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8'
-                }
-            }
-        )
-            .then(response => response.json())
-            .then(data => {
-                console.log("Submitted successfully", data);
+        axios.post('https://jsonplaceholder.typicode.com/todos', {
+            value,
+            completed: false
+        })
+            .then(response => {
+                console.log("Submitted successfully", response.data);
                 setSubmitted(true); // triggers navigation in useEffect
             })
-            .catch(err => {
-                console.error("Request failed:", err);
+            .catch(error => {
+                console.error("Request failed:", error);
             })
             .finally(() => {
                 setLoading(false); // done loading
             });
     };
+
     return (
         <>
             <div className="w-full h-screen bg-white flex flex-col items-center justify-center animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">

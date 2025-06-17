@@ -29,7 +29,7 @@ import Chatbox from './components/Chatbox';
 import ChatList from './components/ChatList';
 import SearchChat from './pages/SearchChat';
 
-let active = true;
+let active = false;
 let page = active ? <Home /> : <Landing />
 function App() {
   const isAuthenticated = false;
