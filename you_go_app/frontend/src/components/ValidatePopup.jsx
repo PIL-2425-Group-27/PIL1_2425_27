@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import Button from './Button'
 
 function ValidatePopup(props) {
-  const [visible, setVisible] = useState(false)
   
   const [pvisible, setpvisible] = useState(false)
   return (
-    <div className={`absolute w-full h-full bg-[#2d2d2d46] py-5 flex-col items-center justify-center ${visible? 'flex':'hidden'}`}>
+    <div className={`absolute w-full h-full bg-[#2d2d2d46] py-5 flex-col items-center justify-center ${props.visible? 'flex':'hidden'}`}>
       <div className='w-[95%]  rounded-2xl bg-white flex flex-col items-center justify-center p-4 gap-4'>
         <img
           className='w-10'
@@ -33,11 +32,7 @@ function ValidatePopup(props) {
                         />
                     </div>
         <Button text={'Supprimer'} textCol={'text-2xl font-semibold text-white'} bg={'bg-red-400'} link={'/'}/>
-        <Button text={'Annuler'} textCol={'text-2xl font-semibold text-[#202020]'} bg={'bg-white border-2 border-gray-400'} onClick={()=>{setVisible(prev => {
-  const newValue = prev;
-  console.log('nv  :'+visible); // ✅ correct updated value
-  return newValue;
-});}}/>
+        <Button text={'Annuler'} textCol={'text-2xl font-semibold text-[#202020]'} bg={'bg-white border-2 border-gray-400'} onClick={() => props.setVisible(false)} />
       </div>
     </div>
   )

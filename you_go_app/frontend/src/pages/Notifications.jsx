@@ -55,7 +55,7 @@ function Notifications() {
             <div
                 className={`w-full h-screen ${theme == false ? 'bg-white' : 'bg-[#2d2d2d] text-white'} flex flex-col items-center justify-evenly py-10`}
             >
-                <Return link={'/Profile'}/>
+                <Return link={'/'}/>
                 <Title content={'Notifications'} floating={true} />
                 <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
                     {notificationList.map((notification)=>

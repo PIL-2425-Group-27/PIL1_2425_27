@@ -28,7 +28,8 @@ from .serializers import (
     KYCSerializer,
     TrackingGPSSerializer,
     GPSHistorySerializer,
-    DeleteAccountSerializer
+    DeleteAccountSerializer,
+    roleSerializer
 )
 
 User = get_user_model()
@@ -50,6 +51,26 @@ class RegisterView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)
     
     queryset = User.objects.all()
+
+class roleView(generics.CreateAPIView):
+    serializer_class = roleSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        serializer = roleSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Rôle mis à jour avec succès."})
+        return Response(serializer.errors, status=400)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        role = request.data.get("role")
+        if role not in ['PASSAGER', 'CONDUCTEUR']:
+            return Response({"error": "Rôle invalide."}, status=400)
+        user.role = role
+        user.save()
+        return Response({"message": "Rôle mis à jour avec succès.", "role": user.role}, status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginView(generics.GenericAPIView):
@@ -76,7 +97,7 @@ class LoginView(generics.GenericAPIView):
    
 
 
-# View pour la réinitialisation du mot de passe (flow simplifié de base)
+# View pour la réinitialisation du mot de passe 
 class RequestPasswordResetView(APIView):
     serializer_class = ResetPasswordSerializer
     permission_classes = [permissions.AllowAny]
@@ -88,8 +109,6 @@ class RequestPasswordResetView(APIView):
         email = serializer.validated_data['email']
         try:
             user = User.objects.get(email=email)
-            # Ici → en production, on enverrait un email avec un token sécurisé
-            # Exemple : send_reset_password_email(user)
             user.generate_reset_code()  # Génère un code de réinitialisation
             user.save()
             send_transactional_email(
@@ -101,9 +120,7 @@ class RequestPasswordResetView(APIView):
                     "code": user.reset_code,
                     "now": now()
                     }
-        )    # Note: Assurez-vous de configurer les paramètres d'email dans settings.py
-            # Envoi d'un email de réinitialisation (à configurer dans settings.py)
-        
+        )    
 
             return Response({"detail": "Un email de réinitialisation a été envoyé ."}, status=status.HTTP_200_OK)
         except User.DoesNotExist:

@@ -15,6 +15,16 @@ THEME_CHOICES = [
     ('light', 'Clair'),
     ('dark', 'Sombre'),
 ]
+role = models.CharField(
+    max_length=15,
+    choices=[
+        ('NON_ATTRIBUE', 'Non attribué'),
+        ('PASSAGER', 'Passager'),
+        ('CONDUCTEUR', 'Conducteur')
+    ],
+    default='NON_ATTRIBUE'
+)
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, db_index=True)
