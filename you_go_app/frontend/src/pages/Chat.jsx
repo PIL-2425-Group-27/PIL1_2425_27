@@ -1,5 +1,5 @@
 import React from 'react'
-import ChatMenu from '../components/ChatMenu'
+import ChatMenu from '../components/ChatList'
 import Chatbox from '../components/Chatbox'
 
 function Chat() {
@@ -9,7 +9,6 @@ function Chat() {
                 className='w-full h-screen bg-white relative'
             >
               <ChatMenu/>  
-              <Chatbox/>  
 
             </div>
         </>

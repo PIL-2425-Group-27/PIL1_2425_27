@@ -55,7 +55,6 @@ function Profile() {
             >
                 <Return theme={theme} />
                 <Title content={'Profil'} floating={true} />
-                <Notification floating={true} icon={'./src/assets/icons/notification.svg'} link={'/Notifications'} theme={theme} />
                 <div
                     className='w-full flex flex-col items-center'
                 >
@@ -81,7 +80,7 @@ function Profile() {
                         <Button text={"Supprimer le compte"} textCol={'text-red-400 font-semibold'} bg={'bg-white border-2 border-red-400 active:bg-gray-100 mb-10'} icon={"./src/assets/icons/deleteForever2.svg"} submitted={true} onClick={() => { setIt() }} />
                     </div>
                 </div>
-                <ValidatePopup warning={'Voulez-vous supprimer ce compte?\n Tapez votre mot de passe puis validez.'} visible={visible} />
+                <ValidatePopup warning={'Voulez-vous supprimer ce compte?\n Tapez votre mot de passe puis validez.'} visible={visible} setVisible={setVisible}/>
             </div >
         </>
     );

@@ -1,8 +1,10 @@
 import Button from '../components/Button';
 import Chart from '../components/Chart';
 import Navbar from '../components/Navbar';
+import Notification from '../components/Notification';
 
 function Home() {
+    let theme = false
     let user = "<User>"
     let statut = 'passager'
     let action = statut=='passager'?'Publier une demande':'Publier une offre'
@@ -31,6 +33,7 @@ function Home() {
         <>
             <div className='relative w-full h-screen flex flex-col items-center animate-fade'>
                 <div className='relative w-full  bg-[#ffcd74] rounded-b-3xl px-[4vw] pt-[4vh] pb-[4vw] flex flex-col justify-center gap-[3vh]'>
+                    <Notification floating={true} icon={'./src/assets/icons/notification.svg'} link={'/Notifications'} theme={theme} />
                     <h1 className='text-3xl font-bold mt-8 text-white'>Bonjour {user}</h1>
                     <a
                         href='/SearchRides'
