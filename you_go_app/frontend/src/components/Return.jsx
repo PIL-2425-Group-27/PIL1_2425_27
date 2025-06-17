@@ -6,7 +6,7 @@ function Return(props) {
                     className="flex flex-row text-2sm font-bold"
                     href={props.link!=undefined? props.link:'/'}><img
                         className="w-6 aspect-square"
-                        src="./src/assets/icons/arrow_back.svg"
+                        src="../src/assets/icons/arrow_back.svg"
                         alt="return" />
                 </a>
             </div>

@@ -55,7 +55,7 @@ function History() {
             <div
                 className={`relative w-full h-screen ${theme == false ? 'bg-white' : 'bg-[#2d2d2d] text-white'} flex flex-col items-center justify-evenly py-10`}
             >
-                <Return link={'/Profile'} theme={theme}/>
+                <Return link={'/'} theme={theme}/>
                 <Title content={'Historique'} floating={true} />
                 <div className="w-full h-full flex flex-col items-center justify-start pt-[8vh] gap-[1vh]">
                     {historyList.map((historyItem) =>

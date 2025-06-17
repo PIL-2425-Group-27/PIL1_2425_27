@@ -25,6 +25,10 @@ import History from './pages/History';
 import PasswordChanged from './pages/PasswordChanged';
 import PrivateRoute from './utils/PrivateRoute';
 import ChatSupportClient from './pages/ChatSupportClient';
+import Chatbox from './components/Chatbox';
+import ChatList from './components/ChatList';
+import SearchChat from './pages/SearchChat';
+
 let active = true;
 let page = active ? <Home /> : <Landing />
 function App() {
@@ -60,6 +64,9 @@ function App() {
             <Route path="/ModifProfile" element={<ModifProfile />} />
             <Route path="/History" element={<History />} />
             <Route path="/ChatSupportClient" element={<ChatSupportClient />} />
+            <Route path="/ChatList" element={<ChatList />} />
+            <Route path="/Chat/:chatId" element={<Chatbox />} />
+            <Route path="/SearchChat" element={<SearchChat />} />
           </Route>
         </Routes>
       </BrowserRouter>
