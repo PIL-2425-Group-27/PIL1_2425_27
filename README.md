@@ -2,19 +2,6 @@
 ## Dépôt Github projet intégrateur Groupe 27
  L’application développée met en correspondance des conducteurs et des passagers sur des trajets quotidiens entre leur domicile et le campus. Notre application est basée sur une plateforme de partage de trajet, de covoiturage et de messageri instantannée que nous nommons **« You Go App »**. Les instructions pour le démarrage de l'application sont décrites dans la suite de ce document.
 
-
-## 🚗 YouGo Frontend – Plateforme de Covoiturage (React): 
-Aller dans le dossier frontend dans le terminal de vs code avec 'cd you_go_app/frontend' ou 'cd you_go_app' puis 'cd frontend'
-
-1-    npm install :pour installer toutes les dependances du projet
-2-    npm install react-router-dom axios postcss autoprefixer
-3-    npm install tailwindcss @tailwindcss/vite
-4-    npm install @react-oauth/google(pour l'authentification avec compte google)
-5-    npm run dev
-
-## 🚗 YouGo Backend – Plateforme de Covoiturage (Django): 
-Le backend du projet est développé avec **Django**, **Django REST Framework**, **WebSockets**, et connecté à une base de données **MySQL** dont les identifiants de connexion sont stockés dans un fichier .env. Il est nécessaire de créer un environnement virtuel avec python si vous developpez deja d'autres solutions sur votre machine avec le langage Python...
-
  ### 📦 Fonctionnalités principales
 
 - Authentification personnalisée (email/numéro + mot de passe)
@@ -33,7 +20,17 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 - Statistiques personnalisées (trajets, kilometrage)
 - Interface Admin optimisée (Django + Jazzmin)
 
----
+## 🚗 YouGo Frontend – Plateforme de Covoiturage (React): 
+Aller dans le dossier frontend dans le terminal de vs code avec 'cd you_go_app/frontend' ou 'cd you_go_app' puis 'cd frontend'
+
+1-    npm install :pour installer toutes les dependances du projet
+2-    npm install react-router-dom axios postcss autoprefixer
+3-    npm install tailwindcss @tailwindcss/vite
+4-    npm install @react-oauth/google(pour l'authentification avec compte google)
+5-    npm run dev
+
+## 🚗 YouGo Backend – Plateforme de Covoiturage (Django): 
+Le backend du projet est développé avec **Django**, **Django REST Framework**, **WebSockets**, et connecté à une base de données **MySQL** dont les identifiants de connexion sont stockés dans un fichier .env. Il est nécessaire de créer un environnement virtuel avec python si vous developpez deja d'autres solutions sur votre machine avec le langage Python...
 
 ### 🛠 Technologies utilisées
 
