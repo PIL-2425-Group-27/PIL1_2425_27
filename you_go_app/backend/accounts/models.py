@@ -15,6 +15,7 @@ THEME_CHOICES = [
     ('light', 'Clair'),
     ('dark', 'Sombre'),
 ]
+<<<<<<< HEAD
 role = models.CharField(
     max_length=15,
     choices=[
@@ -23,6 +24,8 @@ role = models.CharField(
     ],
     default='PASSGER'
 )
+=======
+>>>>>>> d404b70e7048895643c0f6da6abbe7b6ce17b0a8
 
 
 class User(AbstractUser):
@@ -34,6 +37,19 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'phone_number']
 
+<<<<<<< HEAD
+=======
+    role = models.CharField(
+        max_length=15,
+        choices=[
+            ('NON_ATTRIBUE', 'Non attribué'),
+            ('PASSAGER', 'Passager'), 
+            ('CONDUCTEUR', 'Conducteur')
+            ],
+        default='NON_ATTRIBUE'
+    )
+
+>>>>>>> d404b70e7048895643c0f6da6abbe7b6ce17b0a8
     is_active = models.BooleanField(default=True)
     is_kyc_validated = models.BooleanField(default=False)
     reset_code = models.CharField(max_length=6, null=True, blank=True)
@@ -62,6 +78,7 @@ class User(AbstractUser):
             self.reset_code_expiration and 
             now() <= self.reset_code_expiration
     )
+<<<<<<< HEAD
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -87,6 +104,13 @@ class UserProfile(models.Model):
         default='PASSAGER'
     )
     theme_preference = models.CharField(max_length=10,choices=THEME_CHOICES,default='light')
+=======
+    theme_preference = models.CharField(
+        max_length=10,
+        choices=THEME_CHOICES,
+        default='light'
+)
+>>>>>>> d404b70e7048895643c0f6da6abbe7b6ce17b0a8
     reliability_score = models.PositiveIntegerField(default=0)
     reliability_badge = models.CharField(max_length=10, choices=BADGE_CHOICES, default='BRONZE')
     def update_reliability(self):
@@ -125,6 +149,11 @@ class UserProfile(models.Model):
             self.reliability_badge = 'BRONZE'
 
         self.save()
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    
+    
     # Données personnelles étendues
     first_name = models.CharField(max_length=30, blank=True, null=False)
     last_name = models.CharField(max_length=30, blank=True, null=False)
@@ -162,7 +191,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"Profil de {self.email}"
 class Vehicle(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="Vehicle")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Vehicle")
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     license_plate = models.CharField(max_length=50, unique=True)

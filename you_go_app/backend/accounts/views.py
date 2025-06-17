@@ -44,9 +44,16 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
         # Ensure the profile exists (create if missing)
         profile = UserProfile.objects.get_or_create(user=user)
         profile_data = ProfileSerializer(profile).data
+
+        # Créer le profile si necessaire
+        if not hasattr(user, 'profile'):
+            UserProfile.objects.create(user=user)
+        profile_data = ProfileSerializer(user.profile).data
+
         refresh = RefreshToken.for_user(user)
         return Response({
             "access": str(refresh.access_token),
