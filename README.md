@@ -56,13 +56,24 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 1. Cloner le repo
 2. Créer et configurer `.env` :
     ```env
-    DJANGO_SECRET_KEY=...
+    SECRET_KEY=...
     DEBUG=True
     DB_NAME=ifri_comotorage_db
     DB_USER=root
     DB_PASSWORD=...
+    DB_HOST=localhost
+    DB_PORT=3306
+    EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+    EMAIL_HOST=smtp.office365.com
     EMAIL_HOST_USER=note.yougo@outlook.fr
     EMAIL_HOST_PASSWORD=...
+    ALLOWED_HOSTS=127.0.0.1,localhost
+    ACCESS_TOKEN_LIFETIME_MINUTES=60
+    REFRESH_TOKEN_LIFETIME_DAYS=5
+    TIME_ZONE=Africa/Porto-Novo
+    LOG_LEVEL=INFO
+    FRONTEND_BASE_URL=http://localhost:3000
+
     ```
 
 3. Installer les dépendances :
