@@ -13,7 +13,8 @@ function Login() {
             password: "",
         });
 
-    const [border, setBorder] = useState('border-gray-200')
+    const [border1, setBorder1] = useState('border-gray-200')
+    const [border2, setBorder2] = useState('border-gray-200')
     const [visible, setvisible] = useState(false)
     const [compatible, setCompatible] = useState(false)
     const [showErr, setShowErr] = useState(false)
@@ -56,8 +57,10 @@ function Login() {
         }
     });
     const isCompatible = () => {
-        setCompatible((formData.contact === 10989898 || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')
-        setShowErr(true)
+        setCompatible((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')
+        setShowErr(!((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit'))
+        setBorder1(((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')?'border-green-200':'border-red-200')
+        setBorder2(((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')?'border-green-200':'border-red-200')
     }
 
     const checkValidity = useMemo(() => {
@@ -116,7 +119,7 @@ function Login() {
                         }
                     }
                 >
-                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border1}`}>
                         <input
                             className=""
                             placeholder="E-mail ou téléphone"
@@ -127,13 +130,13 @@ function Login() {
                             required
                             autoComplete="true"
                             onChange={(e) => {
-                                setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200')
+                                setBorder1(isValid(e.target.value) ? 'border-green-200' : 'border-red-200')
                                 setContact(e.target.value)
                                 handleChange(e)
                             }}
                         />
                     </div>
-                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${showErr?'border-red-400': 'border-gray-200' }`}>
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border2 }`}>
                         <input
                             placeholder="Mot de passe"
                             type={visible ? 'text' : 'password'}
