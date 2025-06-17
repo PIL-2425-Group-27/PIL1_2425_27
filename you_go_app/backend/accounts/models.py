@@ -15,15 +15,6 @@ THEME_CHOICES = [
     ('light', 'Clair'),
     ('dark', 'Sombre'),
 ]
-role = models.CharField(
-    max_length=15,
-    choices=[
-        ('NON_ATTRIBUE', 'Non attribué'),
-        ('PASSAGER', 'Passager'),
-        ('CONDUCTEUR', 'Conducteur')
-    ],
-    default='NON_ATTRIBUE'
-)
 
 
 class User(AbstractUser):
@@ -36,9 +27,13 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username', 'phone_number']
 
     role = models.CharField(
-        max_length=10,
-        choices=[('PASSAGER', 'Passager'), ('CONDUCTEUR', 'Conducteur')],
-        default='PASSAGER'
+        max_length=15,
+        choices=[
+            ('NON_ATTRIBUE', 'Non attribué'),
+            ('PASSAGER', 'Passager'), 
+            ('CONDUCTEUR', 'Conducteur')
+            ],
+        default='NON_ATTRIBUE'
     )
 
     is_active = models.BooleanField(default=True)
@@ -61,10 +56,6 @@ class User(AbstractUser):
             self.reset_code_expiration and 
             now() <= self.reset_code_expiration
     )
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    
     theme_preference = models.CharField(
         max_length=10,
         choices=THEME_CHOICES,
@@ -108,6 +99,11 @@ class UserProfile(models.Model):
             self.reliability_badge = 'BRONZE'
 
         self.save()
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    
+    
     # Données personnelles étendues
     first_name = models.CharField(max_length=30, blank=True, null=False)
     last_name = models.CharField(max_length=30, blank=True, null=False)
@@ -145,7 +141,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"Profil de {self.email}"
 class Vehicle(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="Vehicle")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Vehicle")
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     license_plate = models.CharField(max_length=50, unique=True)

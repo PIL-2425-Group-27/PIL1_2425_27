@@ -47,7 +47,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password2')
         password = validated_data.pop('password')
-        user = UserProfile(**validated_data)
+        user = User(**validated_data)
         user.role = 'NON_ATTRIBUE'  # Forcer le rôle initial
         user.set_password(password)
         user.save()
@@ -183,7 +183,7 @@ class VehicleSerializer(serializers.ModelSerializer):
         return data
     def create(self, validated_data):
         user = self.context['request'].user
-        vehicle = vehicle.objects.create(owner=user, **validated_data)
+        vehicle = Vehicle.objects.create(owner=user, **validated_data)
         return vehicle
     def update(self, instance, validated_data):
         instance.brand = validated_data.get('brand', instance.brand)
