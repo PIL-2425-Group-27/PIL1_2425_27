@@ -59,6 +59,8 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 
 ### ⚙️ Installation
 
+Cloner le repo
+
 **Frontend**
 
 1. Ouvrir le dossier principal:
@@ -80,8 +82,8 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 5. Cliquer sur le lien obtenu en console.
 
 **Backend**
-1. Cloner le repo
-2. Créer et configurer `.env` :
+
+1. Créer et configurer `.env` :
     ```env
     SECRET_KEY=...
     DEBUG=True
@@ -103,18 +105,18 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 
     ```
 
-3. Installer les dépendances :
+2. Installer les dépendances :
     ```bash
     pip install -r requirements.txt
     ```
 
-4. Appliquer les migrations :
+3. Appliquer les migrations :
     ```bash
     python manage.py makemigrations
     python manage.py migrate
     ```
 
-5. Lancer le serveur :
+4. Lancer le serveur :
     ```bash
     python manage.py runserver
     ```
