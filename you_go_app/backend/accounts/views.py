@@ -11,7 +11,8 @@ from rest_framework.exceptions import NotFound, ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import update_last_login
 from django.core.mail import send_mail
-from django.utils.timezone import now, timezone
+from django.utils.timezone import now
+from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from django.contrib.auth import authenticate
@@ -31,6 +32,7 @@ from .serializers import (
     DeleteAccountSerializer,
     roleSerializer
 )
+from mailing.utils import send_transactional_email
 
 User = get_user_model()
 
@@ -42,7 +44,9 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        profile_data = ProfileSerializer(user.profile).data
+        # Ensure the profile exists (create if missing)
+        profile = UserProfile.objects.get_or_create(user=user)
+        profile_data = ProfileSerializer(profile).data
         refresh = RefreshToken.for_user(user)
         return Response({
             "access": str(refresh.access_token),
@@ -62,6 +66,7 @@ class roleView(generics.CreateAPIView):
             serializer.save()
             return Response({"message": "Rôle mis à jour avec succès."})
         return Response(serializer.errors, status=400)
+    
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -79,12 +84,12 @@ class LoginView(generics.GenericAPIView):
     def post(self, request):
         identifier = request.data.get("identifier")  # Peut être email ou téléphone
         password = request.data.get("password")
-        profile_data = ProfileSerializer(user.profile).data
         if not identifier or not password:
             return Response({"error": "Email ou numéro de téléphone et mot de passe requis."}, status=400)
         user = User.objects.filter(email=identifier).first() or User.objects.filter(phone_number=identifier).first()
 
         if user and user.check_password(password):
+            profile_data = ProfileSerializer(user.profile).data
             refresh = RefreshToken.for_user(user)
             update_last_login(None, user)
             return Response({
@@ -105,7 +110,6 @@ class RequestPasswordResetView(APIView):
     def post(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         email = serializer.validated_data['email']
         try:
             user = User.objects.get(email=email)
@@ -120,12 +124,11 @@ class RequestPasswordResetView(APIView):
                     "code": user.reset_code,
                     "now": now()
                     }
-        )    
-
+            )    
             return Response({"detail": "Un email de réinitialisation a été envoyé ."}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({"error": "Aucun utilisateur trouvé avec cet email."}, status=status.HTTP_404_NOT_FOUND)
-from mailing.utils import send_transactional_email
+
 class ResetPasswordView(generics.GenericAPIView):
     serializer_class = ResetPasswordSerializer
 
@@ -187,16 +190,16 @@ class VehicleView(generics.CreateAPIView, generics.UpdateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
     def get_object(self):
         user = self.request.user
-        vehicle = vehicle.objects.filter(owner=user).first()
+        vehicle = Vehicle.objects.filter(owner=user).first()
         if not vehicle:
             raise NotFound("Aucun véhicule enregistré.")
         return vehicle
     def get(self, request, *args, **kwargs):
         vehicle = self.get_object()
         serializer = self.get_serializer(vehicle)
+        return Response(serializer.data)
         return Response(serializer.data)
 
 
@@ -211,15 +214,14 @@ class KYCView(generics.RetrieveUpdateAPIView):
         try:
             return self.request.user.kyc  # Accès direct via related_name
         except KYC.DoesNotExist:
-            raise NotFound("Aucune demande KYC trouvée. Veuillez en soumettre une.")
-        kyc, _ = KYC.objects.get_or_create(user=self.request.user)
-        send_transactional_email(
-            subject="📥 KYC en cours de traitement",
-            to_email=request.user.email,
-            template_name="emails/kyc_submitted.html",
-            context={"user": request.user}
+            kyc, _ = KYC.objects.get_or_create(user=self.request.user)
+            send_transactional_email(
+                subject="📥 KYC en cours de traitement",
+                to_email=self.request.user.email,
+                template_name="emails/kyc_submitted.html",
+                context={"user": self.request.user}
             )
-        return kyc
+            return kyc
     
 class KYCAdminView(APIView):
     permission_classes = [IsAdminUser]
