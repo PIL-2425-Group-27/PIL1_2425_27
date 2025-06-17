@@ -11,8 +11,7 @@ function PublishOffer() {
         fixed_price: "",
         vehiculesmodel: "",
         seats: "",
-        description: "",
-
+        description: ""
     });
     const handleChange = (e) => {
         setForm({ ...form, 

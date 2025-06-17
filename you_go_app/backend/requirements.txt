@@ -1,6 +1,30 @@
-django>=4.2
-djangorestframework>=3.14
-djangorestframework-simplejwt>=5.2
+Django>=5.2,<6.0
+djangorestframework>=3.15.1
+djangorestframework-simplejwt>=5.3.1
+drf-spectacular>=0.27
+django-filter>=23.5
+channels>=4.0
+channels-redis>=4.1
+reportlab>=3.6
+requests>=2.31
 mysqlclient>=2.2
 python-dotenv>=1.0
-Pillow>=10.0
+Pillow>=10.2
+channels_redis>=4.1
+django-cors-headers>=4.3.1
+django-environ>=0.11.2
+channels>=4.1.0
+channels-redis>=4.2.0
+redis>=5.0.4
+celery>=5.3.6
+django-celery-beat>=2.6.0
+asgiref>=3.7.2
+uvicorn>=0.29.0
+python-decouple>=3.8
+django-jazzmin>=2.6.0
+pydub>=0.25.1
+
+
+#Instructions pour l’installation
+#pip install -r requirements.txt
+
