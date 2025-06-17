@@ -1,104 +1,103 @@
-
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../components/Button";
+import Return from "../components/Return";
 
 function Verification() {
-    const [value, setValue] = useState('')
-    const [submitted, setSubmitted] = useState(false);
-    const login = (e) => {
+    const inputsRef = useRef([]);
+    const [code, setCode] = useState(["", "", "", ""]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const theme = false
+    const handleChange = (e, index) => {
+        const val = e.target.value;
+        if (!/^\d?$/.test(val)) return;
+
+        const newCode = [...code];
+        newCode[index] = val;
+        setCode(newCode);
+
+        if (val && index < 3) {
+            inputsRef.current[index + 1]?.focus();
+        }
+    };
+
+    const handleKeyDown = (e, index) => {
+        if (e.key === "Backspace" && !code[index] && index > 0) {
+            inputsRef.current[index - 1]?.focus();
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch(
-            'https://jsonplaceholder.typicode.com/todos',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    value,
-                    completed: false
-                })
-            }
-        )
-            .then(response => response.json())
-            .then(() => console.log("Submitted successfully"))
-            .then(() => setSubmitted(prevSubmitted => true))
-            .then(json => console.log(json))
-            .catch(e => {
-                console.log("failed")
-            })
-    }
+        const otp = code.join("");
+        if (otp.length < 4) {
+            setError("Veuillez entrer le code complet.");
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code: otp }),
+            });
+            const result = await response.json();
+            console.log("Verification result:", result);
+            // handle success or error based on result
+        } catch (err) {
+            console.error("Verification failed:", err);
+            setError("Erreur lors de la vérification.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <>
-            <div className="w-full h-screen bg-white flex flex-col items-center justify-center gap-[4vh] animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
-
-                <div className="flex flex-row items-start px-2.5 absolute top-12 left-3">
-                    <a
-                        className="flex flex-row text-sm font-bold"
-                        href="/ForgotPassword"><img
-                            className="w-5 aspect-square"
-                            src="./src/assets/icons/left-arrow.svg"
-                            alt="return" />Retour
-                    </a>
-                </div>
-                <div className="w-full h-fit pl-10 flex flex-row items-center justify-start">
-                    <h1 className="text-3xl font-bold">Vérification</h1>
-                </div>
-                <div className="w-6/10 aspect-square">
-                    <img
-                        src="./src/assets/img/OTP.svg"
-                        alt="" />
-                </div>
-                <form
-                    className="w-full h-fit flex flex-col items-center gap-5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full [&_input]:text-center"
-                    action=""
-                    method="post"
-                    onSubmit={login}
-                >
-                    <div className="flex flex-row w-full items-center justify-center gap-2 text-3xl">
-                        <div className="w-2/12 aspect-square bg-white rounded-xl flex flex-row items-center justify-center px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
-                            <input
-                                placeholder="X"
-                                type="number"
-                                name="contact"
-                                id="contact"
-                                max={9}
-                                required
-                            />
-                        </div>
-                        <div className="w-2/12 aspect-square bg-white rounded-xl flex flex-row items-center justify-center px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
-                            <input
-                                placeholder="X"
-                                type="number"
-                                name="contact"
-                                id="contact"
-                                max={9}
-                                required
-                            />
-                        </div>
-                        <div className="w-2/12 aspect-square bg-white rounded-xl flex flex-row items-center justify-center px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
-                            <input
-                                placeholder="X"
-                                type="number"
-                                name="contact"
-                                id="contact"
-                                max={9}
-                                required
-                            />
-                        </div>
-                        <div className="w-2/12 aspect-square bg-white rounded-xl flex flex-row items-center justify-center px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
-                            <input
-                                placeholder="X"
-                                type="number"
-                                name="contact"
-                                id="contact"
-                                max={9}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <Button text={"Vérifier"} textCol={'text-white'} bg={'bg-[#ffcd74]'} type={'submit'} submitted={submitted} link={'/ChangePassword'} />
-                </form>
-
+        <div className="w-full h-screen bg-white flex flex-col items-center justify-center gap-6 animate-fade font-manrope">
+            <Return link={'/Login'} theme={theme} />
+            <div className="w-full h-fit pl-10 flex flex-row items-center justify-start">
+                <h1 className="text-3xl font-bold">Vérification</h1>
             </div>
-        </>
+            <div className="w-6/10 aspect-square">
+                <img
+                    src="./src/assets/img/OTP.svg"
+                    alt="" />
+            </div>
+            <p className="text-gray-500 text-sm text-center max-w-xs">
+                Veuillez entrer le code à 4 chiffres envoyé à votre adresse e-mail ou numéro de téléphone.
+            </p>
+
+            <form onSubmit={handleSubmit} className="flex flex-col items-center gap-6">
+                <div className="flex gap-4">
+                    {code.map((digit, index) => (
+                        <input
+                            key={index}
+                            ref={(el) => (inputsRef.current[index] = el)}
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={1}
+                            className="w-12 h-12 text-center border-2 rounded-md text-xl border-gray-300 focus:border-yellow-400 focus:outline-none"
+                            value={digit}
+                            onChange={(e) => handleChange(e, index)}
+                            onKeyDown={(e) => handleKeyDown(e, index)}
+                        />
+                    ))}
+                </div>
+
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                <Button
+                    text={loading ? "Vérification..." : "Valider"}
+                    textCol={'text-white'}
+                    bg={loading ? 'bg-gray-400' : 'bg-[#ffcd74]'}
+                    type={'submit'}
+                    disabled={loading}
+                />
+            </form>
+        </div>
     );
 }
 

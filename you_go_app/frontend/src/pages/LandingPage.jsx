@@ -48,7 +48,7 @@ function Landing() {
                     <h1 className='w-8/10 text-xl text-center font-semibold mx-auto animate-fade animate-delay-4000'>L'application de covoiturage pour Etudiants</h1>
                 </div>
                 <div className='w-full flex flex-col items-center animate-fade animate-delay-4200'>
-                    <Button text={'Creer un compte'} bg={'bg-[#ffcb74]'} submitted={true} link={'/Register'} />
+                    <Button text={'Creer un compte'} textCol={'text-white'} bg={'bg-[#ffcb74]'} submitted={true} link={'/Register'} />
                     <p
                         className="my-5 text-gray-600">
                         Vous avez déjà un compte?
