@@ -28,7 +28,8 @@ from .serializers import (
     KYCSerializer,
     TrackingGPSSerializer,
     GPSHistorySerializer,
-    DeleteAccountSerializer
+    DeleteAccountSerializer,
+    roleSerializer
 )
 
 User = get_user_model()
@@ -50,6 +51,26 @@ class RegisterView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)
     
     queryset = User.objects.all()
+
+class roleView(generics.CreateAPIView):
+    serializer_class = roleSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        serializer = roleSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Rôle mis à jour avec succès."})
+        return Response(serializer.errors, status=400)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        role = request.data.get("role")
+        if role not in ['PASSAGER', 'CONDUCTEUR']:
+            return Response({"error": "Rôle invalide."}, status=400)
+        user.role = role
+        user.save()
+        return Response({"message": "Rôle mis à jour avec succès.", "role": user.role}, status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginView(generics.GenericAPIView):

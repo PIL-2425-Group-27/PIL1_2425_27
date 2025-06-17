@@ -23,6 +23,8 @@ uvicorn>=0.29.0
 python-decouple>=3.8
 django-jazzmin>=2.6.0
 pydub>=0.25.1
+python>=3.12.4
+
 
 
 #Instructions pour l’installation
