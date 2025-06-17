@@ -28,7 +28,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'phone_number',
-            'role',
             'password',
             'password2',
         ]
@@ -49,9 +48,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         validated_data.pop('password2')
         password = validated_data.pop('password')
         user = UserProfile(**validated_data)
+        user.role = 'NON_ATTRIBUE'  # Forcer le rôle initial
         user.set_password(password)
         user.save()
         return user
+class roleSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ['role']
+
+    def validate_role(self, value):
+        if value not in ['PASSAGER', 'CONDUCTEUR']:
+            raise serializers.ValidationError("Rôle invalide.")
+        return value
+    
+
 
 # Serializer pour la réinitialisation du mot de passe
 class ResetPasswordSerializer(serializers.Serializer):

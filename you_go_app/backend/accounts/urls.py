@@ -2,11 +2,13 @@
 
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import RegisterView, ResetPasswordView, RequestPasswordResetView, LogoutView, ProfileView, VehicleView, KYCView, KYCAdminView, TrackingGPSView, GPSHistoryView, update_tracking_consent, get_user_tracking_position, SecureDeleteAccountView, ThemePreferenceUpdateView
+from .views import RegisterView, ResetPasswordView, RequestPasswordResetView, LogoutView, ProfileView, VehicleView, KYCView, KYCAdminView, TrackingGPSView, GPSHistoryView, update_tracking_consent, get_user_tracking_position, SecureDeleteAccountView, ThemePreferenceUpdateView, roleView
 
 urlpatterns = [
     # Endpoint pour l'inscription
     path('register/', RegisterView.as_view(), name='register'),
+    # Endpoint pour la validation du rôle (admin, conducteur, passager)
+    path('role/', roleView.as_view(), name='role'),
 
     # Endpoint pour la connexion (JWT)
     path('login/', TokenObtainPairView.as_view(), name='login'),
