@@ -15,17 +15,6 @@ THEME_CHOICES = [
     ('light', 'Clair'),
     ('dark', 'Sombre'),
 ]
-<<<<<<< HEAD
-role = models.CharField(
-    max_length=15,
-    choices=[
-        ('PASSAGER', 'Passager'),
-        ('CONDUCTEUR', 'Conducteur')
-    ],
-    default='PASSGER'
-)
-=======
->>>>>>> d404b70e7048895643c0f6da6abbe7b6ce17b0a8
 
 
 class User(AbstractUser):
@@ -37,8 +26,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'phone_number']
 
-<<<<<<< HEAD
-=======
     role = models.CharField(
         max_length=15,
         choices=[
@@ -49,7 +36,6 @@ class User(AbstractUser):
         default='NON_ATTRIBUE'
     )
 
->>>>>>> d404b70e7048895643c0f6da6abbe7b6ce17b0a8
     is_active = models.BooleanField(default=True)
     is_kyc_validated = models.BooleanField(default=False)
     reset_code = models.CharField(max_length=6, null=True, blank=True)
@@ -78,39 +64,11 @@ class User(AbstractUser):
             self.reset_code_expiration and 
             now() <= self.reset_code_expiration
     )
-<<<<<<< HEAD
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    email = models.EmailField(unique=True, db_index=True)
-    phone_number = models.CharField(max_length=20, unique=True)
-  
-    username = models.CharField(max_length=150, unique=True, db_index=True)
-    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'phone_number']
-
-    is_active = models.BooleanField(default=True)
-    is_kyc_validated = models.BooleanField(default=False)
-    reset_code = models.CharField(max_length=6, null=True, blank=True)
-    reset_code_expiration = models.DateTimeField(null=True, blank=True)
-    last_modified_username = models.DateTimeField(null=True, blank=True)
-    role = models.CharField(
-        max_length=15,
-        choices=[
-            ('PASSAGER', 'Passager'),
-            ('CONDUCTEUR', 'Conducteur')
-        ],
-        default='PASSAGER'
-    )
-    theme_preference = models.CharField(max_length=10,choices=THEME_CHOICES,default='light')
-=======
     theme_preference = models.CharField(
         max_length=10,
         choices=THEME_CHOICES,
         default='light'
 )
->>>>>>> d404b70e7048895643c0f6da6abbe7b6ce17b0a8
     reliability_score = models.PositiveIntegerField(default=0)
     reliability_badge = models.CharField(max_length=10, choices=BADGE_CHOICES, default='BRONZE')
     def update_reliability(self):

@@ -59,7 +59,7 @@ function Register() {
         e.preventDefault();
         setLoading(true); // start loading
 
-        axios.post('https://jsonplaceholder.typicode.com/todos', {
+        axios.post('', {
             value,
             completed: false
         })
