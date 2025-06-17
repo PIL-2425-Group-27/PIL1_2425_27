@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.db import models
 from .models import UserProfile, Vehicle, KYC, TrackingGPS, GPSHistory
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 
 User = get_user_model()
@@ -54,15 +56,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 # Serializer pour la réinitialisation du mot de passe
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
-from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 
-def validate_email(self, value):
-        if not User.objects.filter(email=value).exists():
-            raise ValidationError(_("Aucun utilisateur trouvé avec cet email."))
-        return value
+    def validate_email(self, value):
+            if not User.objects.filter(email=value).exists():
+                raise ValidationError(_("Aucun utilisateur trouvé avec cet email."))
+            return value
 
-from django.contrib.auth import get_user_model
+
 User = get_user_model()
 # Serializer pour la modification du mot de passe
 class ChangePasswordSerializer(serializers.Serializer):
@@ -88,6 +88,30 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 # Serializer pour lecture du profil
+class UserProfileSerializer(serializers.ModelSerializer):
+    
+    role = serializers.CharField(source='user.role', read_only=True)
+    is_kyc_validated = serializers.BooleanField(source='user.is_kyc_validated', read_only=True)
+    reliability_score = serializers.IntegerField(source='user.reliability_score', read_only=True)
+    reliability_badge = serializers.CharField(source='user.reliability_badge', read_only=True)
+    last_modified_name = serializers.DateTimeField(source='user.last_modified_username', read_only=True)
+    theme_preference = serializers.CharField(source='user.theme_preference', read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            'first_name', 'last_name', 'photo_profile',
+            'default_start_point', 'default_end_point',
+            'default_start_time', 'default_end_time',
+            'consent_tracking',
+             'role', 'is_kyc_validated',
+            'reliability_score', 'reliability_badge', 'theme_preference'
+        ]
+    def get_average_rating(self, obj):
+        from reviews.models import Review
+        avg = Review.objects.filter(reviewed_user=obj).aggregate(models.Avg('rating'))['rating__avg']
+        return round(avg, 2) if avg else None
+    
 
 # Serializer pour modification du profil
 
