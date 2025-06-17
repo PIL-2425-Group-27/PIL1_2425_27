@@ -35,9 +35,9 @@ urlpatterns = [
     path("gps/consent/", update_tracking_consent, name="update-tracking-consent"),
 
     path("gps/user/<int:user_id>/", get_user_tracking_position, name="get-user-tracking"),
-    path("delete/", SecureDeleteAccountView.as_view(), name="delete-account")
+    path("delete/", SecureDeleteAccountView.as_view(), name="delete-account"),
 
     # Endpoint pour mettre à jour les préférences de thème
-    path("theme/", ThemePreferenceUpdateView.as_view(), name="theme-preference"),
+    path("theme/", ThemePreferenceUpdateView.as_view(), name="theme-preference")
 ]
 
