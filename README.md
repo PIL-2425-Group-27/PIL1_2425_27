@@ -21,13 +21,7 @@
 - Interface Admin optimisée (Django + Jazzmin)
 
 ## 🚗 YouGo Frontend – Plateforme de Covoiturage (React): 
-Aller dans le dossier frontend dans le terminal de vs code avec 'cd you_go_app/frontend' ou 'cd you_go_app' puis 'cd frontend'
-
-1-    npm install :pour installer toutes les dependances du projet
-2-    npm install react-router-dom axios postcss autoprefixer
-3-    npm install tailwindcss @tailwindcss/vite
-4-    npm install @react-oauth/google(pour l'authentification avec compte google)
-5-    npm run dev
+Le frontend a été développé avec **React JS**, **Tailwind CSS**, **Axios**, **Leaflet**. **NodeJS** est requis pour le fonctionnement du projet. Téléchargez **NodeJS** sur le site officiel [NodeJS](https://nodejs.org/en/download) .
 
 ## 🚗 YouGo Backend – Plateforme de Covoiturage (Django): 
 Le backend du projet est développé avec **Django**, **Django REST Framework**, **WebSockets**, et connecté à une base de données **MySQL** dont les identifiants de connexion sont stockés dans un fichier .env. Il est nécessaire de créer un environnement virtuel avec python si vous developpez deja d'autres solutions sur votre machine avec le langage Python...
@@ -48,10 +42,48 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 
 ---
 
+### 📁 Structure principale
+
+- `accounts/` → Authentification, KYC, tracking, profil, reinitialisation password, consentement tracking(GPS)
+- `offers/` → Gestion des offres, demandes, matching
+- `billing/` → Factures PDF, 
+- `geoassist/` → Point de rendez-vous intelligent 
+- `notifications/` → Notifications internes, WebSocket
+- `chat/` → Messagerie en temps réel
+- `*/admin.py` → Interface administrateur avec Jazzmin
+- `reviews/` → Fonctions de notations et d'evaluation conducteurs - pssagers
+- `mailing/` → Gestion d'envoi de emails 
+- `core/` → Configuration principale Django
+
+---
+
 ### ⚙️ Installation
 
-1. Cloner le repo
-2. Créer et configurer `.env` :
+Cloner le repo
+
+**Frontend**
+
+1. Ouvrir le dossier principal:
+```bash
+    cd you_go_app
+```
+2. Ouvrir le dossier frontend:
+```bash
+    cd frontend
+```
+3. Installer les dependances:
+```bash
+    npm install
+```
+4. Lancer le projet:
+```bash
+    npm run dev
+```
+5. Cliquer sur le lien obtenu en console.
+
+**Backend**
+
+1. Créer et configurer `.env` :
     ```env
     SECRET_KEY=...
     DEBUG=True
@@ -73,38 +105,24 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 
     ```
 
-3. Installer les dépendances :
+2. Installer les dépendances :
     ```bash
     pip install -r requirements.txt
     ```
 
-4. Appliquer les migrations :
+3. Appliquer les migrations :
     ```bash
     python manage.py makemigrations
     python manage.py migrate
     ```
 
-5. Lancer le serveur :
+4. Lancer le serveur :
     ```bash
     python manage.py runserver
     ```
 
 ---
 
-### 📁 Structure principale
-
-- `accounts/` → Authentification, KYC, tracking, profil, reinitialisation password, consentement tracking(GPS)
-- `offers/` → Gestion des offres, demandes, matching
-- `billing/` → Factures PDF, 
-- `geoassist/` → Point de rendez-vous intelligent 
-- `notifications/` → Notifications internes, WebSocket
-- `chat/` → Messagerie en temps réel
-- `*/admin.py` → Interface administrateur avec Jazzmin
-- `reviews/` → Fonctions de notations et d'evaluation conducteurs - pssagers
-- `mailing/` → Gestion d'envoi de emails 
-- `core/` → Configuration principale Django
-
----
 ### 🧪 Tests effectués
 
 - Création utilisateur / login JWT

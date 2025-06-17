@@ -1,11 +1,15 @@
-import { useState,useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios"
 import Button from "../components/Button";
 import isValid from "../functions/entryCheck";
+import { Navigate, useNavigate } from "react-router-dom";
+import passwordSame from "../functions/passwordSame";
 
 function Register() {
-    const [border, setBorder] = useState('border-gray-200')
+    const [border1, setBorder1] = useState('border-gray-200')
+    const [border2, setBorder2] = useState('border-gray-200')
+    const [border3, setBorder3] = useState('border-gray-200')
     const [visible1, setvisible1] = useState(false)
     const [visible2, setvisible2] = useState(false)
     const [confpwd, setConfpwd] = useState('');
@@ -16,6 +20,9 @@ function Register() {
     const [phone, setPhone] = useState('');
     const [value, setValue] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
+
     // Handle google registration
     const register = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
@@ -35,12 +42,20 @@ function Register() {
         }
     });
     const checkValidity = useMemo(() => {
-        return fir_name.trim() !=='' && las_name.trim() !=='' && password.trim() !== '' && confpwd.trim() !=='' && email.trim() !=='' && phone.trim() !=='';
-    }, [fir_name,las_name,password,confpwd,email,phone]);
-    
+        return (fir_name.trim() !== '' && las_name.trim() !== '' && password.trim() !== '' && confpwd.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && (password == confpwd));
+    }, [fir_name, las_name, password, confpwd, email, phone]);
+
     // Handle login by email
+    useEffect(() => {
+        if (submitted) {
+            navigate('/RoleChoice');
+        }
+    }, [submitted, navigate]);
+
     const send = (e) => {
         e.preventDefault();
+        setLoading(true); // start loading
+
         fetch(
             'https://jsonplaceholder.typicode.com/todos',
             {
@@ -48,18 +63,24 @@ function Register() {
                 body: JSON.stringify({
                     value,
                     completed: false
-                })
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                }
             }
         )
             .then(response => response.json())
-            .then(() => console.log("Submitted successfully"))
-            .then(() => setSubmitted(prev => { const newVal = !prev; return newVal }))
-            .then(json => console.log(submitted))
-            .catch(e => {
-                console.log("failed:"+e)
+            .then(data => {
+                console.log("Submitted successfully", data);
+                setSubmitted(true); // triggers navigation in useEffect
             })
-    }
-
+            .catch(err => {
+                console.error("Request failed:", err);
+            })
+            .finally(() => {
+                setLoading(false); // done loading
+            });
+    };
     return (
         <>
             <div className="w-full h-screen bg-white flex flex-col items-center justify-center animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
@@ -79,7 +100,7 @@ function Register() {
                             name="fist_name"
                             id="firstname"
                             autoComplete="true"
-                            onChange={setFir_name}
+                            onChange={(e) => setFir_name(e.target.value)}
                         />
                     </div>
                     <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
@@ -90,11 +111,11 @@ function Register() {
                             id="lastname"
                             required
                             autoComplete="true"
-                            onChange={setLas_name}
+                            onChange={(e) => setLas_name(e.target.value)}
 
                         />
                     </div>
-                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border1}`}>
                         <input
                             className=""
                             placeholder="E-mail"
@@ -104,12 +125,12 @@ function Register() {
                             required
                             autoComplete="true"
                             onChange={(e) => {
-                                setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200');
-                                setEmail
+                                setBorder1(isValid(e.target.value) ? 'border-green-200' : 'border-red-200');
+                                setEmail(e.target.value)
                             }}
                         />
                     </div>
-                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border2}`}>
                         <input
                             className=""
                             placeholder="Numero de telephone"
@@ -119,8 +140,8 @@ function Register() {
                             required
                             autoComplete="true"
                             onChange={(e) => {
-                                setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200');
-                                setPhone
+                                setBorder2(isValid(e.target.value) ? 'border-green-200' : 'border-red-200');
+                                setPhone(e.target.value)
                             }}
                         />
                     </div>
@@ -132,7 +153,8 @@ function Register() {
                             id="password"
                             required
                             autoComplete="true"
-                            onChange={setPassword}
+                            minLength={4}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <input
                             name="checkbox"
@@ -141,7 +163,9 @@ function Register() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible1 === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                    <p className={`w-full text-sm text-center text-red-400 ${passwordSame(password, confpwd) ? 'hidden' : ''}`}>
+                        Les mots de passe ne correspondent pas</p>
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border3} `}>
                         <input
                             placeholder="Confirmer le mot de passe"
                             type={visible2 ? 'text' : 'password'}
@@ -149,7 +173,11 @@ function Register() {
                             id="confirmpwd"
                             required
                             autoComplete="true"
-                            onChange={setConfpwd}
+                            minLength={4}
+                            onChange={(e) => {
+                                setConfpwd(e.target.value);
+                                setBorder3(passwordSame(password, e.target.value) ? 'border-green-200' : 'border-red-200')
+                            }}
 
                         />
                         <input
@@ -159,12 +187,19 @@ function Register() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible2 === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
-                    <button
-                        disabled={!checkValidity}
-                        type="submit"
-                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffcd74]"
-                    >S'inscrire
-                    </button>
+                    {/* Where we set the user's activity */}
+
+                    <input
+                        type="hidden"
+                        name="is_active"
+                        value={true} />
+                    <Button
+                        text={loading ? "Chargement..." : "S'inscrire"}
+                        textCol={'text-white'}
+                        bg={(loading || !checkValidity) ? 'bg-gray-200' : 'bg-[#ffcd74]'}
+                        type={'submit'}
+                        disabled={loading || !checkValidity}
+                    />
                     <p>ou</p>
                     <Button onClick={() => register()} text={"Continuer avec"} textCol={'text-gray-500'} bg={'bg-gray-100'} icon={'./src/assets/icons/google.svg'} />
                     <p

@@ -4,3 +4,4 @@ const isValid = (entry)=>{
         return emailPattern.test(entry) || phonePattern.test(entry)
 }
 export default isValid
+
