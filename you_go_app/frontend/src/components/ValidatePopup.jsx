@@ -32,7 +32,7 @@ function ValidatePopup(props) {
                         />
                     </div>
         <Button text={'Supprimer'} textCol={'text-2xl font-semibold text-white'} bg={'bg-red-400'} link={'/'}/>
-        <Button text={'Annuler'} textCol={'text-2xl font-semibold text-[#202020]'} bg={'bg-white border-2 border-gray-400'} onClick={()=>props.setVisible(false)}/>
+        <Button text={'Annuler'} textCol={'text-2xl font-semibold text-[#202020]'} bg={'bg-white border-2 border-gray-400'} onClick={() => props.setVisible(false)} />
       </div>
     </div>
   )
