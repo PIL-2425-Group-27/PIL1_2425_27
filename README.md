@@ -13,7 +13,7 @@ Aller dans le dossier frontend dans le terminal de vs code avec 'cd you_go_app/f
 5-    npm run dev
 
 ## 🚗 YouGo Backend – Plateforme de Covoiturage (Django): 
-Le backend du projet est développé avec Django; **Django**, **Django REST Framework**, **WebSockets**, et connecté à une base de données **MySQL** dont les identifiants de connexion sont stockés dans un fichier .env. Il est nécessaire de créer un environnement virtuel avec python si vous developpez deja d'autres solutions sur votre machine avec le langage Python...
+Le backend du projet est développé avec **Django**, **Django REST Framework**, **WebSockets**, et connecté à une base de données **MySQL** dont les identifiants de connexion sont stockés dans un fichier .env. Il est nécessaire de créer un environnement virtuel avec python si vous developpez deja d'autres solutions sur votre machine avec le langage Python...
 
  ### 📦 Fonctionnalités principales
 
