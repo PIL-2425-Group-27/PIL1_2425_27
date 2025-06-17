@@ -1,19 +1,43 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Button from "../components/Button";
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios"
 import isValid from "../functions/entryCheck";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 function Login() {
-    const form = useRef(null)
+    const [formData, setFormData] = useState(
+        {
+            contact: "",
+            password: "",
+        });
+
     const [border, setBorder] = useState('border-gray-200')
     const [visible, setvisible] = useState(false)
+    const [compatible, setCompatible] = useState(false)
+    const [showErr, setShowErr] = useState(false)
     const [password, setPassword] = useState('');
     const [contact, setContact] = useState('');
     const [value, setValue] = useState('')
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
+    // checking compatibility
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData, [name]: value,
 
-    // login handler function
+        }))
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("Form Data Submitted: ", formData);
+
+    }
+
+    // Google login handler function
     const login = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
@@ -31,10 +55,20 @@ function Login() {
             }
         }
     });
+    const isCompatible = () => {
+        setCompatible((formData.contact === 10989898 || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')
+        setShowErr(true)
+    }
 
     const checkValidity = useMemo(() => {
         return password.trim() !== '' && contact.trim() !== '';
     }, [password, contact]);
+
+    useEffect(() => {
+        if (compatible) {
+            navigate('/');
+        }
+    }, [compatible, navigate]);
 
     const send = (e) => {
         e.preventDefault();
@@ -45,17 +79,24 @@ function Login() {
                 body: JSON.stringify({
                     value,
                     completed: false
-                })
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                }
             }
         )
             .then(response => response.json())
-            .then(() => console.log("Submitted successfully"))
-            .then(() => setSubmitted(prev => { const newVal = !prev; return newVal }))
-            .then(json => console.log(submitted))
-            .catch(e => {
-                console.log("failed")
+            .then(data => {
+                console.log("Submitted successfully", data);
+                setSubmitted(true); // triggers navigation in useEffect
             })
-    }
+            .catch(err => {
+                console.error("Request failed:", err);
+            })
+            .finally(() => {
+                setLoading(false); // done loading
+            });
+    };
 
     return (
         <>
@@ -65,10 +106,15 @@ function Login() {
                     <h1 className="text-4xl ">Connexion</h1>
                 </div>
                 <form
-                    ref={form}
                     className="w-full h-fit flex flex-col items-center gap-3.5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
-                    action=""
-                    onSubmit={send}
+                    onSubmit={
+                        (e) => {
+                            e.preventDefault();
+                            isCompatible(e);
+                            handleSubmit(e);
+                            send(e);
+                        }
+                    }
                 >
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
                         <input
@@ -77,24 +123,28 @@ function Login() {
                             type="text"
                             name="contact"
                             id="contact"
+                            value={formData.contact}
                             required
                             autoComplete="true"
                             onChange={(e) => {
                                 setBorder(isValid(e.target.value) ? 'border-green-200' : 'border-red-200')
                                 setContact(e.target.value)
+                                handleChange(e)
                             }}
                         />
                     </div>
-                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${showErr?'border-red-400': 'border-gray-200' }`}>
                         <input
                             placeholder="Mot de passe"
                             type={visible ? 'text' : 'password'}
                             name="password"
                             id="password"
+                            value={formData.password}
                             required
                             autoComplete="true"
                             onChange={(e) => {
                                 setPassword(e.target.value)
+                                handleChange(e)
                             }}
                         />
                         <input
@@ -104,15 +154,22 @@ function Login() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
+                    <input
+                        type="hidden"
+                        name="is_active"
+                        value={true} />
                     <p className="w-9/12 text-right text-sm text-blue-400 mr-2">
                         <a href="/ForgotPassword">Mot de passe oublié</a>
                     </p>
-                    <button
-                        disabled={!checkValidity}
-                        type="submit"
-                        className="w-9/12 max-w-lg h-13 rounded-4xl text-xl text-white bg-[#ffdc74]"
-                    >Se connecter
-                    </button>
+                    <p className={`w-9/12 text-sm text-center text-red-400 ${showErr ? '' : 'hidden'}`}>
+                        Vos identifiants sont incorrects.Veuillez réessayer</p>
+                    <Button
+                        text={loading ? "Chargement..." : "S'inscrire"}
+                        textCol={'text-white'}
+                        bg={(loading || !checkValidity) ? 'bg-gray-200' : 'bg-[#ffcd74]'}
+                        type={'submit'}
+                        disabled={loading || !checkValidity}
+                    />
                     <p>ou</p>
                     <Button onClick={() => login()} text={"Continuer avec"} textCol={'text-gray-500'} bg={'bg-gray-100'} icon={'./src/assets/icons/google.svg'} />
 

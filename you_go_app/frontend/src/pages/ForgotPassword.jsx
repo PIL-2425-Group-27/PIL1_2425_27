@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import isValid from "../functions/entryCheck";
 import Return from "../components/Return";
-Return
-function ForgotPassword() {
+import { Navigate, useNavigate } from "react-router-dom";
+
+function ForgotPassword(props) {
     const [border, setBorder] = useState('border-gray-200')
     const [value, setValue] = useState('')
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (submitted) {
+            navigate('/Verification');
+        }
+    }, [submitted, navigate]);
+
     const send = (e) => {
         e.preventDefault();
+        setLoading(true); // start loading
+
         fetch(
             'https://jsonplaceholder.typicode.com/todos',
             {
@@ -16,17 +28,24 @@ function ForgotPassword() {
                 body: JSON.stringify({
                     value,
                     completed: false
-                })
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                }
             }
         )
             .then(response => response.json())
-            .then(() => console.log("Submitted successfully"))
-            .then(() => setSubmitted(prev =>{ const newVal=!prev;return newVal}))
-            .then(json => console.log(submitted))
-            .catch(e => {
-                console.log("failed")
+            .then(data => {
+                console.log("Submitted successfully", data);
+                setSubmitted(true); // triggers navigation in useEffect
             })
-    }
+            .catch(err => {
+                console.error("Request failed:", err);
+            })
+            .finally(() => {
+                setLoading(false); // done loading
+            });
+    };
     // /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/
     //  /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/
     return (
@@ -66,7 +85,13 @@ function ForgotPassword() {
                         />
                     </div>
                     {/*onClick={() => login()}  link={'/Verification'}*/}
-                    <Button text={"Suivant"} textCol={'text-white'} bg={'bg-[#ffcd74]'} type={'submit'} submitted={submitted} link={'/Verification'} />
+                    <Button
+                        text={loading ? "Chargement..." : "Suivant"}
+                        textCol={'text-white'}
+                        bg={loading ? 'bg-gray-400' : 'bg-[#ffcd74]'}
+                        type={'submit'}
+                        disabled={loading}
+                    />
                 </form>
             </div>
         </>
