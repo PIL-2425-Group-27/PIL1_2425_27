@@ -42,7 +42,43 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
 
 ---
 
+### 📁 Structure principale
+
+- `accounts/` → Authentification, KYC, tracking, profil, reinitialisation password, consentement tracking(GPS)
+- `offers/` → Gestion des offres, demandes, matching
+- `billing/` → Factures PDF, 
+- `geoassist/` → Point de rendez-vous intelligent 
+- `notifications/` → Notifications internes, WebSocket
+- `chat/` → Messagerie en temps réel
+- `*/admin.py` → Interface administrateur avec Jazzmin
+- `reviews/` → Fonctions de notations et d'evaluation conducteurs - pssagers
+- `mailing/` → Gestion d'envoi de emails 
+- `core/` → Configuration principale Django
+
+---
+
 ### ⚙️ Installation
+
+**Frontend**
+
+1. Ouvrir le dossier principal:
+```bash
+    cd you_go_app
+```
+2. Ouvrir le dossier frontend:
+```bash
+    cd frontend
+```
+3. Installer les dependances:
+```bash
+    npm install
+```
+4. Lancer le projet:
+```bash
+    npm run dev
+```
+5. Cliquer sur le lien obtenu en console.
+
 **Backend**
 1. Cloner le repo
 2. Créer et configurer `.env` :
@@ -84,26 +120,7 @@ Le backend du projet est développé avec **Django**, **Django REST Framework**,
     ```
 
 ---
-**Frontend**
-Installer les dépendances du projet:
-```bash
-    npm install
-    ```
-```
-### 📁 Structure principale
 
-- `accounts/` → Authentification, KYC, tracking, profil, reinitialisation password, consentement tracking(GPS)
-- `offers/` → Gestion des offres, demandes, matching
-- `billing/` → Factures PDF, 
-- `geoassist/` → Point de rendez-vous intelligent 
-- `notifications/` → Notifications internes, WebSocket
-- `chat/` → Messagerie en temps réel
-- `*/admin.py` → Interface administrateur avec Jazzmin
-- `reviews/` → Fonctions de notations et d'evaluation conducteurs - pssagers
-- `mailing/` → Gestion d'envoi de emails 
-- `core/` → Configuration principale Django
-
----
 ### 🧪 Tests effectués
 
 - Création utilisateur / login JWT
