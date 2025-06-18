@@ -77,13 +77,13 @@ function Register() {
                     'Content-Type': 'application/json',
                 },
             });
-            const { token, user } = response.data;
+            const { access, user } = response.data;
 
-            console.log("Submitted successfully", user);
+            console.log("Submitted successfully", user.access);
             localStorage.setItem("active_status", true);
-            localStorage.setItem("authToken", token);
+            localStorage.setItem("authToken", user.access);
             localStorage.setItem("userToken", user.id);
-            console.log(token);
+            console.log(access);
 
             setSubmitted(true); // Trigger navigation
         } catch (error) {
