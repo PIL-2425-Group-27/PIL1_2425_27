@@ -17,6 +17,7 @@ function Home() {
     const [user, setUser] = useState()
     console.log(user);
     const token = localStorage.getItem("authToken");
+    const [historyList, setHistoryList] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -35,14 +36,24 @@ function Home() {
             }
         };
         fetchUser();
+        const fetchHistory = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/accounts/gps/history/", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setHistoryList(res.data.first_name || res.data.username || "Utilisateur");
+                setStatut(res.data.role || "passager"); // adapt to your serializer
+            } catch (error) {
+                console.error("Failed to fetch user:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchHistory();
     }, []);
-
-
-    const historyList = [
-        { id: 0, content: 'Trajet Parana-ENA', duration: '30 min' },
-        { id: 1, content: 'Trajet IITA-FASEG', duration: '45 min' },
-        { id: 2, content: 'Trajet Calavi-ENA', duration: '25 min' },
-    ];
+    
 
     if (loading) {
         return <Loading/>;
