@@ -64,7 +64,7 @@ urlpatterns = [
     path('password/reset/confirm/', ResetPasswordView.as_view(), name='confirm_password_reset'),
 
     # Password changes workflow
-    path('password/change/', ChangePasswordView.as_view(), name ='change_password'),
+    path('password/change/', ChangePasswordView.as_view(), name ='password-change'),
     
     # ==========================================
     # USER PROFILE MANAGEMENT

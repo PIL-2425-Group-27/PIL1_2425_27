@@ -177,23 +177,24 @@ class ResetPasswordView(APIView):
                 "error": "Code invalide ou expiré."
             }, status=400)
         
-class ChangePasswordView(generics.GenericAPIView):
-    serializer_class = ChangePasswordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = self.get_serializer(
-            data=request.data, 
-            context={'request': request}
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        
-        logger.info(f"Password changed successfully for user: {request.user.email}")
-        
-        return Response({
-            "message": "Mot de passe changé avec succès."
-        }, status=status.HTTP_200_OK)
+        serializer = ChangePasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        old_password = serializer.validated_data['old_password']
+        new_password = serializer.validated_data['new_password']
+
+        if not user.check_password(old_password):
+            return Response({"detail": "Ancien mot de passe incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+        return Response({"detail": "Mot de passe changé avec succès."}, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
