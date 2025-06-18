@@ -37,7 +37,8 @@ function Register() {
                     }
                 );
                 setSubmitted(true);
-                console.log(res.data);
+                // Save token to localStorage or context for future requests
+
             } catch (error) {
                 console.log(error)
             }
@@ -76,9 +77,12 @@ function Register() {
                     'Content-Type': 'application/json',
                 },
             });
+            const { token, user } = response.data;
 
-            console.log("Submitted successfully", response.data);
+            console.log("Submitted successfully", user);
             localStorage.setItem("active_status", true);
+            localStorage.setItem("authToken", token);
+            console.log(token);
 
             setSubmitted(true); // Trigger navigation
         } catch (error) {

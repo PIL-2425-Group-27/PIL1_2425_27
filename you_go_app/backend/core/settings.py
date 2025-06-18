@@ -117,6 +117,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # Authentification
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Authentification par défaut  # Pour les permissions d'objets
+    'accounts.auth_backends.EmailBackend',
 ]
 
 # Database

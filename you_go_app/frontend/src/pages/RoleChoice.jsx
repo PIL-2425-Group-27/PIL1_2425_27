@@ -26,7 +26,7 @@ function RoleChoice() {
         }
     }, [submitted, navigate]);
 
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("authToken");
 
     const send = async (e) => {
         e.preventDefault();
