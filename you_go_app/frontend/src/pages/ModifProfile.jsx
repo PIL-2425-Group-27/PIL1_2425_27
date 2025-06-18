@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Button from "../components/Button";
 import Title from "../components/Title";
 import Return from "../components/Return";
+import axios from "axios";
+
 
 function ModifProfile() {
-    const [picture, setPicture] = useState('./src/assets/img/bg.jpg')
     const changeFile = (e) => {
         const files = e.target.files;
         for (const file of files) {
@@ -19,12 +20,42 @@ function ModifProfile() {
             reader.readAsDataURL(file);
         }
     };
-    let theme = true
-    let fn = 'John'
-    let ln = "DOE"
-    let statut = 'Passager'
     let ld = 'Agla'
     let hd = '6:30'
+    const [theme, setTheme] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [value, setValue] = useState(false)
+    const [statut, setStatut] = useState('PASSAGER')
+    const [loading, setLoading] = useState(true);
+    const [firstName, setFirstName] = useState()
+    const [lastName, setLastName] = useState()
+    const [picture, setPicture] = useState('./src/assets/img/placeholderPicture.png')
+    const token = localStorage.getItem("authToken")
+    const [verified, setVerified] = useState(false)
+    let fn = firstName
+    let ln = lastName
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/accounts/profile/", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log(res.data);
+                
+                setFirstName(res.data.first_name || res.data.username || "Utilisateur");
+                setLastName(res.data.last_name || "");
+                setStatut(res.data.role || "passager"); // adapt to your serializer
+            } catch (error) {
+                console.error("Failed to fetch user:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchUser();
+    }, []);
     return (
         <>
             <div
