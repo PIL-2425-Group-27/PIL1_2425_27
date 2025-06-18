@@ -26,6 +26,22 @@ function Home() {
     const token = localStorage.getItem("authToken");
 
     useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/accounts/profile/", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setUser(res.data.first_name || res.data.username || "Utilisateur");
+                setStatut(res.data.role || "passager"); // adapt to your serializer
+            } catch (error) {
+                console.error("Failed to fetch user:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchUser();
         const fetchHistory = async () => {
             try {
                 const res = await axios.get("http://localhost:8000/reviews/stats/", {
@@ -85,7 +101,7 @@ function Home() {
                 </div>
                 <div className='relative w-9/10 px-4 py-10 bg-[#e8e8e8] rounded-3xl mt-9 flex flex-col'>
                     <h1 className=' absolute top-0 left-0 text-xl font-semibold p-4'>Activité Récente</h1>
-                    {stats.map(({ label, km, trajets, reviews }) => (
+                    {stats.slice(0, 3).map(({ label, km, trajets, reviews }) => (
                         <div key={label} className='flex flex-col gap-1 mt-4 p-3 bg-white rounded-xl shadow-sm'>
                             <h2 className='text-lg font-semibold text-gray-700'>{label}</h2>
                             <p className='text-sm text-gray-600'>Kilomètres parcourus : <span className='font-medium'>{km} km</span></p>
@@ -99,7 +115,7 @@ function Home() {
                         href='/History'
                     >Voir plus</a>
                 </div>
-                <Button text={action} textCol={'text-white mt-8'} bg={'bg-[#ffcd74]'} submitted={true} link={link} />
+                <Button text={action} textCol={'text-white mt-8 mb-[8em]'} bg={'bg-[#ffcd74]'} submitted={true} link={link} />
                 <Navbar active={'home'} />
             </div>
         </>
