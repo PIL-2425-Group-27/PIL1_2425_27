@@ -98,26 +98,26 @@ function PublishRequest() {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td className="font-semibold">Nature du prix</td>
+                                    <td className="font-semibold">Préférences de prix</td>
                                     <td>
                                         <input
                                             type="text"
                                             className="w-full p-2 border border-gray-300 rounded-lg"
-                                            id="price_type"
-                                            name="price_type"
+                                            id="price_preferences"
+                                            name="price_preferences"
                                             value={form.price_type}
                                             onChange={handleChange}
                                         />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td className="font-semibold">Prix fixé</td>
+                                    <td className="font-semibold">Prix Max</td>
                                     <td>
                                         <input
                                             type="text"
                                             className="w-full p-2 border border-gray-300 rounded-lg"
-                                            id="fixed_price"
-                                            name="fixed_price"
+                                            id="max_price"
+                                            name="max_price"
                                             value={form.fixed_price}
                                             onChange={handleChange}
                                         />
