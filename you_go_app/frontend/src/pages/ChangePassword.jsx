@@ -4,57 +4,73 @@ import Return from "../components/Return";
 import passwordSame from "../functions/passwordSame";
 import { Navigate, useNavigate } from "react-router-dom";
 
-
 function ChangePassword() {
     let theme = false
     const [visible, setvisible] = useState(false)
     const [border, setBorder] = useState('border-gray-200')
-    const [value, setValue] = useState('')
     const [submitted, setSubmitted] = useState(false);
     const [newPwd, setNewpwd] = useState('');
     const [password, setPassword] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const navigate = useNavigate()
-    // login handler function
+
+    // Navigation effect
     useEffect(() => {
-            if (submitted) {
-                navigate('/PasswordChanged');
-            }
-        }, [submitted, navigate]);
+        if (submitted) {
+            navigate('/PasswordChanged');
+        }
+    }, [submitted, navigate]);
 
-    const login = (e) => {
+    // Change password handler function
+    const changePassword = (e) => {
         e.preventDefault();
-        setLoading(true); // start loading
+        setLoading(true);
+        setError('');
 
-        fetch(
-            'https://jsonplaceholder.typicode.com/todos',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    value,
-                    completed: false
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8'
-                }
-            }
-        )
-            .then(response => response.json())
-            .then(data => {
-                console.log("Submitted successfully", data);
-                setSubmitted(true); // triggers navigation in useEffect
+        // Get JWT token from localStorage or wherever you store it
+        const token = localStorage.getItem('access_token');
+        
+        if (!token) {
+            setError('Vous devez être connecté pour changer votre mot de passe');
+            setLoading(false);
+            return;
+        }
+
+        fetch('/api/accounts/password/change/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                old_password: oldPassword,
+                new_password: password,
+                new_password2: newPwd
             })
-            .catch(err => {
-                console.error("Request failed:", err);
-            })
-            .finally(() => {
-                setLoading(false); // done loading
-            });
+        })
+         .then(response => response.json())
+        .then(data => {
+            console.log("Mot de passe changé avec succès", data);
+            setSubmitted(true);
+        })
+        .catch(err => {
+            console.error("Erreur:", err);
+        })
+        .finally(() => {
+            setLoading(false);
+        });
     }
 
     const checkValidity = useMemo(() => {
-        return (password.trim() !== '' && newPwd.trim() !== '' && (password == newPwd));
-    }, [ password, newPwd]);
+        return (
+            oldPassword.trim() !== '' && 
+            password.trim() !== '' && 
+            newPwd.trim() !== '' && 
+            password === newPwd
+        );
+    }, [oldPassword, password, newPwd]);
 
     return (
         <>
@@ -71,10 +87,32 @@ function ChangePassword() {
                 </div>
                 <form
                     className="w-full h-fit flex flex-col items-center justify-center gap-3.5 text-gray-500 [&_input]:focus:outline-0 [&_input]:w-full"
-                    onSubmit={(e)=>{
-                        login(e)
-                    }}
+                    onSubmit={changePassword}
                 >
+                    {/* Old Password Field */}
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
+                        <input
+                            placeholder="Ancien mot de passe"
+                            type={visible ? 'text' : 'password'}
+                            name="oldPassword"
+                            id="oldPassword"
+                            required
+                            autoComplete="current-password"
+                            minLength={4}
+                            value={oldPassword}
+                            onChange={(e) => {
+                                setOldPassword(e.target.value);
+                            }}
+                        />
+                        <input
+                            name="checkbox"
+                            type="checkbox"
+                            onClick={() => { setvisible(!visible) }}
+                            className={`max-w-5 h-5 mx-2.5 appearance-none ${visible === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
+                        />
+                    </div>
+
+                    {/* New Password Field */}
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
                         <input
                             placeholder="Nouveau mot de passe"
@@ -82,8 +120,9 @@ function ChangePassword() {
                             name="password"
                             id="password"
                             required
-                            autoComplete="true"
+                            autoComplete="new-password"
                             minLength={4}
+                            value={password}
                             onChange={(e) => {
                                 setPassword(e.target.value);
                             }}
@@ -95,6 +134,8 @@ function ChangePassword() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
+
+                    {/* Confirm New Password Field */}
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border}`}>
                         <input
                             placeholder="Confirmer le mot de passe"
@@ -102,8 +143,9 @@ function ChangePassword() {
                             name="newPassword"
                             id="newPassword"
                             required
-                            autoComplete="true"
+                            autoComplete="new-password"
                             minLength={4}
+                            value={newPwd}
                             onChange={(e) => {
                                 setNewpwd(e.target.value);
                                 setBorder(passwordSame(password, e.target.value) ? 'border-green-200' : 'border-red-200')
@@ -116,7 +158,18 @@ function ChangePassword() {
                             className={`max-w-5 h-5 mx-2.5 appearance-none ${visible === true ? "bg-[url(./src/assets/icons/hide.svg)]" : "bg-[url(./src/assets/icons/unhide.svg)]"} bg-no-repeat bg-contain bg-center`}
                         />
                     </div>
-                    <p className={`text-red-400 text-sm ${passwordSame(password, newPwd) ? 'hidden' : ''}`}>Les mots de passe ne correspondent pas</p>
+
+                    <p className={`text-red-400 text-sm ${passwordSame(password, newPwd) ? 'hidden' : ''}`}>
+                        Les mots de passe ne correspondent pas
+                    </p>
+
+                    {/* Error message */}
+                    {error && (
+                        <p className="text-red-400 text-sm text-center max-w-lg">
+                            {error}
+                        </p>
+                    )}
+
                     <Button
                         text={loading ? "Chargement..." : "Changer"}
                         textCol={'text-white'}
