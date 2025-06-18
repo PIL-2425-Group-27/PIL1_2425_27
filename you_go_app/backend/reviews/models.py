@@ -192,7 +192,7 @@ class UserReviewSummary(models.Model):
     )
     
     total_reviews = models.PositiveIntegerField(default=0)
-    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00, required=False)
     
     # Detailed averages
     avg_punctuality = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)

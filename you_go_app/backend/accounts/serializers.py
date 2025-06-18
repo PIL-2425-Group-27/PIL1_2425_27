@@ -124,7 +124,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     reliability_badge = serializers.CharField(source='user.reliability_badge', read_only=True)
     last_modified_name = serializers.DateTimeField(source='user.last_modified_username', read_only=True)
     theme_preference = serializers.CharField(source='user.theme_preference', read_only=True)
-    average_rating = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField(required=False)
 
     class Meta:
         model = UserProfile
@@ -146,7 +146,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     phone_number = serializers.CharField(source='user.phone_number', read_only=True)
     role = serializers.CharField(source='user.role', read_only=True)
     is_kyc_validated = serializers.BooleanField(source='user.is_kyc_validated', read_only=True)
-    average_rating = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField(required=False)
     reliability_score = serializers.IntegerField(source='user.reliability_score', read_only=True)
     reliability_badge = serializers.CharField(source='user.reliability_badge', read_only=True)
     last_modified_name = serializers.DateTimeField(source='user.last_modified_username', read_only=True)
@@ -176,7 +176,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         return value
 
     def get_average_rating(self, obj):
-        return obj.average_rating
+        try:
+            return obj.average_rating
+        except (AttributeError, TypeError):
+            return 0.0
+
 
 
 class VehicleSerializer(serializers.ModelSerializer):
