@@ -9,7 +9,6 @@ function RoleChoice() {
     const [role, setRole] = useState('PASSAGER')
     const [roleImg, setRoleImg] = useState('./src/assets/img/passenger.svg')
     const [value, setValue] = useState('')
-    const [submitted, setSubmitted] = useState(false);
     const passer = (data) => {
         setRole('PASSAGER')
         data == 'PASSAGER' ? setRoleImg('./src/assets/img/passenger.svg') : setRoleImg('./src/assets/img/driver.gif');
@@ -19,12 +18,6 @@ function RoleChoice() {
     // choices handler function
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
-
-    useEffect(() => {
-        if (submitted) {
-            navigate('/');
-        }
-    }, [submitted, navigate]);
 
     const token = localStorage.getItem("authToken");
 
@@ -43,6 +36,7 @@ function RoleChoice() {
                 }
             );
             console.log("Role updated:", response.data);
+            navigate('/');
         } catch (error) {
             console.error("Request failed:", error.response || error.message);
         }
