@@ -4,7 +4,6 @@ from django.utils.timezone import now
 import random
 from datetime import timedelta
 from django.utils import timezone
-from offers.models import RideOffer  # Lazy import used in update_reliability
 
 BADGE_CHOICES = [
     ('BRONZE', 'Bronze'),
@@ -92,6 +91,7 @@ class User(AbstractUser):
 
         # Completed rides bonus
         try:
+            from offers.models import RideOffer
             trajets_realises = RideOffer.objects.filter(driver=self, status='COMPLETED').count()
             score += trajets_realises * 5
         except ImportError:
@@ -103,7 +103,7 @@ class User(AbstractUser):
             moyenne = Review.objects.filter(reviewed_user=self).aggregate(models.Avg('rating'))['rating__avg'] or 0
             if moyenne >= 4:
                 score += 20
-        except Exception:
+        except ImportError:
             pass
 
         # Complete profile bonus

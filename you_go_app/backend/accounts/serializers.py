@@ -1,21 +1,22 @@
 # accounts/serializers.py
 
 from rest_framework import serializers
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.db import models
 from .models import UserProfile, Vehicle, KYC, TrackingGPS, GPSHistory
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 
-
 User = get_user_model()
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'phone_number', 'first_name', 'last_name', 'role', 'is_kyc_validated']
-# Serializer pour l'inscription
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
@@ -45,15 +46,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
         validated_data.pop('password2')
-        role = validated_data.pop('role', 'PASSAGER')
-        user = User.objects.create(**validated_data)
-        user.role = role
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.role = 'NON_ATTRIBUE'  # Force initial role
         user.set_password(password)
         user.save()
         return user
-class roleSerializer(serializers.Serializer):
+
+
+class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['role']
@@ -64,18 +66,15 @@ class roleSerializer(serializers.Serializer):
         return value
 
 
-# Serializer pour la réinitialisation du mot de passe
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     def validate_email(self, value):
-            if not User.objects.filter(email=value).exists():
-                raise ValidationError(_("Aucun utilisateur trouvé avec cet email."))
-            return value
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError(_("Aucun utilisateur trouvé avec cet email."))
+        return value
 
 
-User = get_user_model()
-# Serializer pour la modification du mot de passe
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True, required=True)
     new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -98,15 +97,14 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.save()
 
 
-# Serializer pour lecture du profil
 class UserProfileSerializer(serializers.ModelSerializer):
-    
     role = serializers.CharField(source='user.role', read_only=True)
     is_kyc_validated = serializers.BooleanField(source='user.is_kyc_validated', read_only=True)
     reliability_score = serializers.IntegerField(source='user.reliability_score', read_only=True)
     reliability_badge = serializers.CharField(source='user.reliability_badge', read_only=True)
     last_modified_name = serializers.DateTimeField(source='user.last_modified_username', read_only=True)
     theme_preference = serializers.CharField(source='user.theme_preference', read_only=True)
+    average_rating = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
@@ -114,17 +112,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'first_name', 'last_name', 'photo_profile',
             'default_start_point', 'default_end_point',
             'default_start_time', 'default_end_time',
-            'consent_tracking',
-             'role', 'is_kyc_validated',
-            'reliability_score', 'reliability_badge', 'theme_preference'
+            'consent_tracking', 'role', 'is_kyc_validated',
+            'reliability_score', 'reliability_badge', 'theme_preference',
+            'average_rating'
         ]
-    def get_average_rating(self, obj):
-        from reviews.models import Review
-        avg = Review.objects.filter(reviewed_user=obj).aggregate(models.Avg('rating'))['rating__avg']
-        return round(avg, 2) if avg else None
-    
 
-# Serializer pour modification du profil
+    def get_average_rating(self, obj):
+        return obj.user.average_rating
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
@@ -136,6 +131,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     reliability_badge = serializers.CharField(source='user.reliability_badge', read_only=True)
     last_modified_name = serializers.DateTimeField(source='user.last_modified_username', read_only=True)
     theme_preference = serializers.CharField(source='user.theme_preference', read_only=True)
+    
     class Meta:
         model = UserProfile
         fields = [
@@ -143,8 +139,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             'default_start_point', 'default_end_point',
             'default_start_time', 'default_end_time',
             'consent_tracking', 'last_modified_name',
-            'email', 'phone_number', 'role', 'is_kyc_validated','reliability_score', 'reliability_badge', 'average_rating', 'theme_preference'
+            'email', 'phone_number', 'role', 'is_kyc_validated',
+            'reliability_score', 'reliability_badge', 'average_rating', 'theme_preference'
         ]
+
     def validate_first_name(self, value):
         profile = self.instance
         if profile and not profile.can_modify_name():
@@ -156,43 +154,47 @@ class ProfileSerializer(serializers.ModelSerializer):
         if profile and not profile.can_modify_name():
             raise serializers.ValidationError("Vous ne pouvez modifier votre nom qu'une fois tous les 30 jours.")
         return value
+
     def get_average_rating(self, obj):
-        from reviews.models import Review
-        avg = Review.objects.filter(reviewed_user=obj).aggregate(models.Avg('rating'))['rating__avg']
-        return round(avg, 2) if avg else None
+        return obj.user.average_rating
+
 
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
-        fields = '__all__'
+        fields = ['id', 'brand', 'model', 'license_plate', 'seats_available']
+
     def validate_license_plate(self, value):
-        if Vehicle.objects.filter(license_plate=value).exists():
-            raise serializers.ValidationError("Cette plaque d'immatriculation est déjà utilisée.")
+        # Check if updating existing vehicle
+        if self.instance:
+            if Vehicle.objects.filter(license_plate=value).exclude(pk=self.instance.pk).exists():
+                raise serializers.ValidationError("Cette plaque d'immatriculation est déjà utilisée.")
+        else:
+            if Vehicle.objects.filter(license_plate=value).exists():
+                raise serializers.ValidationError("Cette plaque d'immatriculation est déjà utilisée.")
         return value
+
     def validate_seats_available(self, value):
         if value <= 0:
             raise serializers.ValidationError("Le nombre de sièges disponibles doit être supérieur à zéro.")
         return value
+
     def validate(self, data):
-         # Vérification du rôle
-        if self.context['request'].user.role != "CONDUCTEUR":  
+        # Check user role
+        request = self.context.get('request')
+        if request and request.user.role != "CONDUCTEUR":
             raise serializers.ValidationError("Seuls les conducteurs peuvent enregistrer un véhicule.")
-        # Vérification que la marque et le modèle sont fournis
+        
+        # Check required fields
         if not data.get('brand') or not data.get('model'):
             raise serializers.ValidationError("La marque et le modèle du véhicule sont requis.")
         return data
+
     def create(self, validated_data):
         user = self.context['request'].user
-        vehicle = Vehicle.objects.create(owner=user, **validated_data)
-        return vehicle
-    def update(self, instance, validated_data):
-        instance.brand = validated_data.get('brand', instance.brand)
-        instance.model = validated_data.get('model', instance.model)
-        instance.license_plate = validated_data.get('license_plate', instance.license_plate)
-        instance.seats_available = validated_data.get('seats_available', instance.seats_available)
-        instance.save()
-        return instance
-# Serializer pour la déconnexion (invalider le token)
+        return Vehicle.objects.create(owner=user, **validated_data)
+
+
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
@@ -201,29 +203,24 @@ class LogoutSerializer(serializers.Serializer):
             raise serializers.ValidationError("Le token de rafraîchissement est requis.")
         return attrs
 
-    def save(self):
-        from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
-        refresh = self.validated_data['refresh']
-        OutstandingToken.objects.filter(token=refresh).update(blacklisted=True)
-        BlacklistedToken.objects.create(token=refresh)
 
 class KYCSerializer(serializers.ModelSerializer):
     class Meta:
         model = KYC
-        fields = ["user", "document_file", "status", "created_at", "validated_at", "rejection_reason", "is_kyc_validated"]
-        extra_kwargs = {
-            'user': {'read_only': True},
-            'status': {'read_only': True},
-            'created_at': {'read_only': True},
-            'validated_at': {'read_only': True},
-            'rejection_reason': {'required': False, 'allow_blank': True}
-        }
-        read_only_fields = ["status", "created_at", "validated_at", "rejection_reason", "is_kyc_validated"]
-    
+        fields = [
+            "user", "document_file", "status", "created_at", 
+            "validated_at", "rejection_reason", "is_kyc_validated"
+        ]
+        read_only_fields = [
+            "user", "status", "created_at", "validated_at", 
+            "rejection_reason", "is_kyc_validated"
+        ]
+
     def validate_document_file(self, value):
-        if value.size > 5 * 1024 * 1024:  # Limite à 5 Mo
+        if value.size > 5 * 1024 * 1024:  # 5MB limit
             raise serializers.ValidationError("Le fichier ne doit pas dépasser 5 Mo.")
         return value
+
 
 class TrackingGPSSerializer(serializers.ModelSerializer):
     class Meta:
@@ -231,10 +228,12 @@ class TrackingGPSSerializer(serializers.ModelSerializer):
         fields = ["consent_tracking", "last_latitude", "last_longitude", "last_update"]
         read_only_fields = ["last_update"]
 
+
 class GPSHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = GPSHistory
         fields = ["latitude", "longitude", "timestamp"]
+
 
 class DeleteAccountSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)

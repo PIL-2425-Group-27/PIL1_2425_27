@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>📥 Demande KYC reçue</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f6f9fc; color: #333; margin: 0; padding: 2rem; }
+    .container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); max-width: 600px; margin: auto; }
+    h2 { color: #1a73e8; }
+    .footer { margin-top: 30px; font-size: 12px; color: #888; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📥 Votre demande KYC a bien été reçue</h2>
+    <p>Bonjour {{ user.first_name }},</p>
+    <p>Nous avons bien reçu votre demande de vérification d'identité (KYC). Elle est actuellement en cours de traitement par notre équipe.</p>
+    <p>Vous serez notifié(e) par email dès qu'une décision sera prise.</p>
+    <p>Merci pour votre confiance.</p>
+    <div class="footer">YouGo – Vérification d’identité sécurisée</div>
+  </div>
+</body>
+</html>

@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import (
     # Authentication views
     RegisterView,
-    roleView,  # Fixed naming convention
+    RoleView,  # Fixed naming convention
     LogoutView,
     
     # Password reset views
@@ -44,7 +44,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     
     # Role management (driver, passenger)
-    path('role/', roleView.as_view(), name='role'),
+    path('role/', RoleView.as_view(), name='role'),
     
     # JWT Authentication
     path('login/', TokenObtainPairView.as_view(), name='login'),
