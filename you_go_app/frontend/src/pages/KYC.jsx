@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArrowBack from '../assets/icons/arrow_back.svg'; // Corrige le chemin selon ton arborescence
+import Title from '../components/Title';
 
 const KYC = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const KYC = () => {
         onClick={handleGoBack}
       />
 
-      <h2 className="text-xl font-bold mb-4 text-[#fad02c] ">Vérification KYC</h2>
+      <Title content={"Verification KYC"} floating={true}/>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {/* Nom complet */}
