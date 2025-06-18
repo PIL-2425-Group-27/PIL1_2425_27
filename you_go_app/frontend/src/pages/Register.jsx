@@ -63,7 +63,7 @@ function Register() {
         const payload = {
             first_name: fir_name,
             last_name: las_name,
-            user_name: user_name,
+            username: user_name,
             email,
             phone_number: phone,
             password,
