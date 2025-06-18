@@ -29,7 +29,7 @@ function PublishOffer() {
 
     // Configuration axios avec intercepteur pour l'authentification
     const apiClient = axios.create({
-        baseURL: API_BASE_URL,
+        baseURL: reponse,
         headers: {
             'Content-Type': 'application/json',
         },
