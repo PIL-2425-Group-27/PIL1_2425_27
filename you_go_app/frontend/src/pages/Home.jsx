@@ -15,10 +15,12 @@ function Home() {
     const link = statut === 'passager' ? '/PublishRequest' : '/PublishOffer';
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState()
+    const [labels, setLabels] = useState([])
     const [total_km, setTotal_km] = useState([])
+    const [total_reviews, setTotal_reviews] = useState([])
+    const [total_trajets, setTotal_trajets] = useState([])
     console.log(user);
     const token = localStorage.getItem("authToken");
-    const [historyList, setHistoryList] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -44,8 +46,11 @@ function Home() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                console.log(res.data);
+                console.log(res.data.labels);
+                setLabels(res.data.labels)
                 setTotal_km(res.data.total_km)
+                setTotal_reviews(res.data.total_reviews_received)
+                setTotal_trajets(res.data.total_trajet)
                 
             } catch (error) {
                 console.error("Failed to fetch user:", error);
@@ -78,19 +83,9 @@ function Home() {
                 </div>
                 <div className='relative w-9/10 px-4 py-10 bg-[#e8e8e8] rounded-3xl mt-9 flex flex-col'>
                     <h1 className=' absolute top-0 left-0 text-xl font-semibold p-4'>Activité Récente</h1>
-                    {historyList.map((item, index) => (
-                        <div
-                            key={index}
-                            className='flex flex-row items-center gap-2 mt-4'>
-                            <div className='w-4 h-4 bg-[url(./src/assets/icons/checked.svg)] bg-center bg-contain'></div>
-                            <h1 className='text-2xl'>
-                                <span className='font-semibold'>
-                                    {item.content}
-                                </span>
-                                {' : ' + item.duration}
-                            </h1>
-                        </div>
-                    ))}
+                        {/* {labels.map(()=>{
+
+                        })} */}
                     <a
                         className='w-fit mx-10 mt-5 underline underline-offset-2'
                         href='/History'
