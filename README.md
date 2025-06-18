@@ -1,6 +1,6 @@
 # PIL1_2425_27
 ## Dépôt Github projet intégrateur Groupe 27
- L’application développée met en correspondance des conducteurs et des passagers sur des trajets quotidiens entre leur domicile et le campus. Notre application est basée sur une plateforme de partage de trajet, de covoiturage et de messagerie instantannée que nous nommons **« You Go App »**. Les instructions pour le démarrage de l'application sont décrites dans la suite de ce document.
+ L’application développée met en correspondance des conducteurs et des passagers sur des trajets quotidiens entre leur domicile et le campus. Notre application est basée sur une plateforme de partage de trajet, de covoiturage et de messagerie instantannée que nous nommons **« You Go App »**. Les instructions pour le démarrage de l'application sont décrites dans la suite de ce document. ![NOTRE RAPPORT ICI 👉 ](/you_go_app/rapport.html)
 
 
 ![LOGO](/capture_travaux/logo.jpeg)
