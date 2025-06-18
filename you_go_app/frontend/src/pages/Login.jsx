@@ -80,7 +80,7 @@ const send = async (e) => {
 
     try {
         const response = await axios.post('http://localhost:8000/accounts/login/', {
-            contact: formData.contact,
+            email: formData.contact,
             password: formData.password
         });
         
