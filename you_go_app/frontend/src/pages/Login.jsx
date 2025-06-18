@@ -73,33 +73,34 @@ function Login() {
         }
     }, [compatible, navigate]);
 
-    const send = (e) => {
-        e.preventDefault();
-        fetch(
-            'https://jsonplaceholder.typicode.com/todos',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    value,
-                    completed: false
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8'
-                }
-            }
-        )
-            .then(response => response.json())
-            .then(data => {
-                console.log("Submitted successfully", data);
-                setSubmitted(true); // triggers navigation in useEffect
-            })
-            .catch(err => {
-                console.error("Request failed:", err);
-            })
-            .finally(() => {
-                setLoading(false); // done loading
-            });
-    };
+const send = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setShowErr(false);
+
+    try {
+        const response = await axios.post('http://localhost:8000/accounts/login/', {
+            contact: formData.contact,
+            password: formData.password
+        });
+        
+        // If login is successful
+        const { token, user } = response.data;
+        console.log("Login successful", user);
+
+        // Save token to localStorage or context for future requests
+        localStorage.setItem("authToken", token);
+
+        // Navigate to home or dashboard
+        navigate('/');
+
+    } catch (error) {
+        console.error("Login failed:", error.response?.data || error.message);
+        setShowErr(true);
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <>

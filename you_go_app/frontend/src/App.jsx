@@ -32,29 +32,41 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loading from './pages/Loading';
 
-let active = false;
-let page = active ? <Home /> : <Landing />
 function App() {
   const [active, setActive] = useState(null); // null = loading
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const fetchActiveStatus = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/active-status/');
-        setActive(response.data.active);
-      } catch (error) {
-        console.error('Error fetching active status:', error);
-        setActive(false); // default fallback
+useEffect(() => {
+  const fetchActiveStatus = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        console.warn("No access token found.");
+        setActive(false);
+        return;
       }
-    };
 
-    fetchActiveStatus();
-  }, []);
+      const response = await axios.get('http://127.0.0.1:8000/active-status/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setActive(response.data.active);
+    } catch (error) {
+      console.error('Error fetching active status:', error.response || error.message);
+      setActive(false);
+    }
+  };
+
+  fetchActiveStatus();
+}, []);
+
 
   if (active === null) {
-    return <Loading/>; // or a spinner
+    return <Loading />; // or a spinner
   }
+
   return (
     <div className=''>
       <BrowserRouter>
@@ -66,7 +78,8 @@ function App() {
           <Route path="/Verification" element={<Verification />} />
           <Route path="/PasswordChanged" element={<PasswordChanged />} />
           <Route path="/ChangePassword" element={<ChangePassword />} />
-          {/* Private routes */}
+
+          {/* Private Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/" element={active ? <Home /> : <Landing />} />
             <Route path="/Chat" element={<Chat />} />
@@ -96,4 +109,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
