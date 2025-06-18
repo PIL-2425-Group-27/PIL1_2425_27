@@ -20,7 +20,7 @@ from .models import UserProfile, Vehicle, KYC, TrackingGPS, GPSHistory
 from .serializers import (
     RegisterSerializer, ResetPasswordSerializer, ProfileSerializer,
     VehicleSerializer, KYCSerializer, TrackingGPSSerializer,
-    GPSHistorySerializer, DeleteAccountSerializer, RoleSerializer
+    GPSHistorySerializer, DeleteAccountSerializer, RoleSerializer, LoginSerializer
 )
 from mailing.utils import send_transactional_email
 
@@ -57,6 +57,7 @@ class RegisterView(generics.CreateAPIView):
             }
         }, status=status.HTTP_201_CREATED)
 
+
 class RoleView(generics.GenericAPIView):
     serializer_class = RoleSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -82,7 +83,26 @@ class RoleView(generics.GenericAPIView):
             serializer.save()
             return Response({"message": "Rôle mis à jour avec succès."}, status=200)
         return Response(serializer.errors, status=400)
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+    permission_classes = [permissions.AllowAny]
 
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        
+        # Génération des tokens JWT
+        refresh = RefreshToken.for_user(user)
+        
+        return Response({
+            'message': 'Connexion réussie',
+            'user': ProfileSerializer(user).data,
+            'tokens': {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }
+        })
 class RequestPasswordResetView(APIView):
     permission_classes = [permissions.AllowAny]
 

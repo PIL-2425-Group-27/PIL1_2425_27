@@ -9,6 +9,7 @@ from .views import (
     RegisterView,
     RoleView,  # Fixed naming convention
     LogoutView,
+    LoginView,  # If you have a custom login view, otherwise use TokenObtainPairView
     
     # Password reset views
     RequestPasswordResetView,
@@ -47,7 +48,7 @@ urlpatterns = [
     path('role/', RoleView.as_view(), name='role'),
     
     # JWT Authentication
-    path('login/', TokenObtainPairView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout/', LogoutView.as_view(), name='logout'),
     
