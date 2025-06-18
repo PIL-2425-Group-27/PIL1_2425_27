@@ -11,7 +11,7 @@ const KYC = () => {
   const [selfie, setSelfie] = useState(null);
 
   const handleGoBack = () => {
-    navigate('/profile'); // Assure-toi que "/profile" est bien défini dans ton routeur
+    navigate(-1); // Assure-toi que "/profile" est bien défini dans ton routeur
   };
 
   const handleSubmit = (e) => {
