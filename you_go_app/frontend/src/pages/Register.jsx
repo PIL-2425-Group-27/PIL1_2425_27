@@ -78,6 +78,8 @@ function Register() {
             });
 
             console.log("Submitted successfully", response.data);
+            localStorage.setItem("active_status", true);
+
             setSubmitted(true); // Trigger navigation
         } catch (error) {
             console.error("Request failed:", error.response?.data || error.message);

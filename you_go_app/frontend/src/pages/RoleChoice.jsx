@@ -3,57 +3,54 @@ import { useRef, useState, useEffect } from "react";
 import Button from "../components/Button";
 import Checkbox from "../components/Checkbox";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function RoleChoice() {
-    const [role, setRole] = useState('passager')
+    const [role, setRole] = useState('PASSAGER')
     const [roleImg, setRoleImg] = useState('./src/assets/img/passenger.svg')
     const [value, setValue] = useState('')
     const [submitted, setSubmitted] = useState(false);
     const passer = (data) => {
-        setRole('passager')
-        data=='passager'?setRoleImg('./src/assets/img/passenger.svg'):setRoleImg('./src/assets/img/driver.gif');
-        data=='passager'?setRole('passager'):setRole('conducteur');
+        setRole('PASSAGER')
+        data == 'PASSAGER' ? setRoleImg('./src/assets/img/passenger.svg') : setRoleImg('./src/assets/img/driver.gif');
+        data == 'PASSAGER' ? setRole('PASSAGER') : setRole('CONDUCTEUR');
         console.log(data);
     }
     // choices handler function
-        const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
-    
+
     useEffect(() => {
         if (submitted) {
             navigate('/');
         }
     }, [submitted, navigate]);
 
-    const send = (e) => {
-        e.preventDefault();
-        setLoading(true); // start loading
+    const token = localStorage.getItem("access_token");
 
-        fetch(
-            'https://jsonplaceholder.typicode.com/todos',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    value,
-                    completed: false
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8'
+    const send = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                'http://127.0.0.1:8000/accounts/role/',
+                { role },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
                 }
-            }
-        )
-            .then(response => response.json())
-            .then(data => {
-                console.log("Submitted successfully", data);
-                setSubmitted(true); // triggers navigation in useEffect
-            })
-            .catch(err => {
-                console.error("Request failed:", err);
-            })
-            .finally(() => {
-                setLoading(false); // done loading
-            });
+            );
+            console.log("Role updated:", response.data);
+        } catch (error) {
+            console.error("Request failed:", error.response || error.message);
+        }
+        finally {
+            setLoading(false);
+        }
     };
+
     return (
         <>
             <div className="relative w-full h-screen bg-white flex flex-col items-center justify-center animate-fade md:bg-amber-300 lg:bg-green-300 font-manrope font-semibold">
@@ -81,8 +78,8 @@ function RoleChoice() {
                     onSubmit={send}
                 >
                     <div className="flex flex-col items-start w-7/9 gap-[1vh] mb-[4vh]">
-                        <Checkbox text={'Passager'} val={'passager'} name={'role'} passer={passer} checked={true} selected ={role=='passager'}/>
-                        <Checkbox text={'Conducteur'} val={'conducteur'} name={'role'} passer={passer} checked={false} selected ={role=='conducteur'}/>
+                        <Checkbox text={'Passager'} val={'PASSAGER'} name={'role'} passer={passer} checked={true} selected={role == 'PASSAGER'} />
+                        <Checkbox text={'Conducteur'} val={'CONDUCTEUR'} name={'role'} passer={passer} checked={false} selected={role == 'CONDUCTEUR'} />
                     </div>
                     <Button
                         text={loading ? "Chargement..." : "Valider"}
