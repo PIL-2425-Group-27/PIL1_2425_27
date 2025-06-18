@@ -16,6 +16,7 @@ function Register() {
     const [password, setPassword] = useState('');
     const [fir_name, setFir_name] = useState('');
     const [las_name, setLas_name] = useState('');
+    const [user_name, setUser_name] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [value, setValue] = useState('');
@@ -43,8 +44,8 @@ function Register() {
         }
     });
     const checkValidity = useMemo(() => {
-        return (fir_name.trim() !== '' && las_name.trim() !== '' && password.trim() !== '' && confpwd.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && (password == confpwd));
-    }, [fir_name, las_name, password, confpwd, email, phone]);
+        return (fir_name.trim() !== '' && las_name.trim() !== '' && user_name.trim() !== '' && password.trim() !== '' && confpwd.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && (password == confpwd));
+    }, [fir_name, las_name, user_name, password, confpwd, email, phone]);
 
     // Handle login by email
     useEffect(() => {
@@ -55,25 +56,37 @@ function Register() {
 
 
 
-    const send = (e) => {
+    const send = async (e) => {
         e.preventDefault();
-        setLoading(true); // start loading
+        setLoading(true); // Start loading
 
-        axios.post('https://jsonplaceholder.typicode.com/todos', {
-            value,
-            completed: false
-        })
-            .then(response => {
-                console.log("Submitted successfully", response.data);
-                setSubmitted(true); // triggers navigation in useEffect
-            })
-            .catch(error => {
-                console.error("Request failed:", error);
-            })
-            .finally(() => {
-                setLoading(false); // done loading
+        const payload = {
+            first_name: fir_name,
+            last_name: las_name,
+            user_name: user_name,
+            email,
+            phone_number: phone,
+            password,
+            password2: confpwd, // assuming your Django backend expects both for confirmation
+        };
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/accounts/register/', payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
+
+            console.log("Submitted successfully", response.data);
+            setSubmitted(true); // Trigger navigation
+        } catch (error) {
+            console.error("Request failed:", error.response?.data || error.message);
+            // You can add toast or visual error feedback here
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <>
@@ -106,6 +119,18 @@ function Register() {
                             required
                             autoComplete="true"
                             onChange={(e) => setLas_name(e.target.value)}
+
+                        />
+                    </div>
+                    <div className="w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 border-gray-200 focus-within:border-[#ffdb99]">
+                        <input
+                            placeholder="Nom d'utilisateur"
+                            type="text"
+                            name="user_name"
+                            id="username"
+                            required
+                            autoComplete="true"
+                            onChange={(e) => setUser_name(e.target.value)}
 
                         />
                     </div>

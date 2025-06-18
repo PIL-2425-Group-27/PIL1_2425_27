@@ -28,11 +28,33 @@ import ChatSupportClient from './pages/ChatSupportClient';
 import Chatbox from './components/Chatbox';
 import ChatList from './components/ChatList';
 import SearchChat from './pages/SearchChat';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Loading from './pages/Loading';
 
 let active = false;
 let page = active ? <Home /> : <Landing />
 function App() {
-  const isAuthenticated = false;
+  const [active, setActive] = useState(null); // null = loading
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const fetchActiveStatus = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/active-status/');
+        setActive(response.data.active);
+      } catch (error) {
+        console.error('Error fetching active status:', error);
+        setActive(false); // default fallback
+      }
+    };
+
+    fetchActiveStatus();
+  }, []);
+
+  if (active === null) {
+    return <Loading/>; // or a spinner
+  }
   return (
     <div className=''>
       <BrowserRouter>
@@ -46,7 +68,7 @@ function App() {
           <Route path="/ChangePassword" element={<ChangePassword />} />
           {/* Private routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/" element={page} />
+            <Route path="/" element={active ? <Home /> : <Landing />} />
             <Route path="/Chat" element={<Chat />} />
             <Route path="/Profile" element={<Profile />} />
             <Route path="/Billing" element={<Billing />} />
