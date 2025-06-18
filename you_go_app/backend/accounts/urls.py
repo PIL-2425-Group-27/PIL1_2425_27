@@ -14,6 +14,9 @@ from .views import (
     # Password reset views
     RequestPasswordResetView,
     ResetPasswordView,
+
+    # Password change views
+    ChangePasswordView,
     
     # Profile and user management
     ProfileView,
@@ -59,6 +62,9 @@ urlpatterns = [
     # Password reset workflow
     path('password/reset/request/', RequestPasswordResetView.as_view(), name='request_password_reset'),
     path('password/reset/confirm/', ResetPasswordView.as_view(), name='confirm_password_reset'),
+
+    # Password changes workflow
+    path('password/change/', ChangePasswordView.as_view(), name ='change_password'),
     
     # ==========================================
     # USER PROFILE MANAGEMENT
