@@ -183,7 +183,7 @@ class VehicleSerializer(serializers.ModelSerializer):
         return data
     def create(self, validated_data):
         user = self.context['request'].user
-        vehicle = vehicle.objects.create(owner=user, **validated_data)
+        vehicle = Vehicle.objects.create(owner=user, **validated_data)
         return vehicle
     def update(self, instance, validated_data):
         instance.brand = validated_data.get('brand', instance.brand)
