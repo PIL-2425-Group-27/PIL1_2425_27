@@ -30,7 +30,7 @@ function ChangePassword() {
         setError('');
 
         // Get JWT token from localStorage or wherever you store it
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem('auth_token');
         
         if (!token) {
             setError('Vous devez être connecté pour changer votre mot de passe');
