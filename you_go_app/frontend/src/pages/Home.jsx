@@ -11,8 +11,8 @@ import Loading from './Loading';
 function Home() {
     let theme = false
     const [statut, setStatut] = useState('PASSAGER')
-    const action = statut === 'passager' ? 'Publier une demande' : 'Publier une offre';
-    const link = statut === 'passager' ? '/PublishRequest' : '/PublishOffer';
+    const action = statut === 'PASSAGER' ? 'Publier une demande' : 'Publier une offre';
+    const link = statut === 'PASSAGER' ? '/PublishRequest' : '/PublishOffer';
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState()
     const [labels, setLabels] = useState([])
