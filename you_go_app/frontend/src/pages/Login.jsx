@@ -88,7 +88,7 @@ function Login() {
             // Save token to localStorage or context for future requests
             localStorage.setItem("first_name", user.first_name);
             localStorage.setItem("last_name", user.last_name);
-            localStorage.setItem("active_status", true);
+            localStorage.setItem("active_status", JSON.stringify(true));
             localStorage.setItem("authToken", tokens.access);
             
             // Navigate to home or dashboard

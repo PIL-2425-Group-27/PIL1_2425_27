@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Profile from './pages/Profile';
@@ -32,29 +32,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loading from './pages/Loading';
 
+
 function App() {
   const [active, setActive] = useState(null); // null = loading
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-useEffect(() => {
-  const fetchActiveStatus = async () => {
-    try {
-      const token = localStorage.getItem("active_status");
-      if (!token) {
-        console.warn("No access token found.");
-        setActive(false);
-        return;
-      }
+  useEffect(() => {
+    const stored = localStorage.getItem("active_status");
+    const parsed = JSON.parse(stored || "false"); // safely converts to boolean
+    setActive(parsed);
+  }, []);
 
-      setActive(token);
-    } catch (error) {
-      console.error('Error fetching active status:', error.response || error.message);
-      setActive(false);
-    }
-  };
-
-  fetchActiveStatus();
-}, []);
 
 
   if (active === null) {
@@ -74,7 +62,7 @@ useEffect(() => {
           <Route path="/ChangePassword" element={<ChangePassword />} />
 
           {/* Private Routes */}
-          <Route element={<PrivateRoute />}>
+          <Route element={<PrivateRoute active={active} />}>
             <Route path="/" element={active ? <Home /> : <Landing />} />
             <Route path="/Chat" element={<Chat />} />
             <Route path="/Profile" element={<Profile />} />

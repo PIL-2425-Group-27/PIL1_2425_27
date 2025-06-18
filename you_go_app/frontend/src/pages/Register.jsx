@@ -80,7 +80,7 @@ function Register() {
             const { access, user } = response.data;
 
             console.log("Submitted successfully", access);
-            localStorage.setItem("active_status", true);
+            localStorage.setItem("active_status", JSON.stringify(true));
             localStorage.setItem("authToken", access);
             localStorage.setItem("userToken", user.id);
             console.log(access);
