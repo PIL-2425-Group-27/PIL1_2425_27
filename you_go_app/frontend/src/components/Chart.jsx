@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 
-function Chart() {
+function Chart(props) {
     let w = window.innerWidth * 0.9
     return (
         <>
@@ -11,7 +11,7 @@ function Chart() {
 
                     <BarChart
                         series={[
-                            { data: [75, 44, 0, 24, 34] },
+                            { data: props.km },
 
                         ]}
                         yAxis={[{

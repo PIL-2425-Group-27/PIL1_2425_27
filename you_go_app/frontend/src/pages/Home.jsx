@@ -15,6 +15,7 @@ function Home() {
     const link = statut === 'passager' ? '/PublishRequest' : '/PublishOffer';
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState()
+    const [total_km, setTotal_km] = useState([])
     console.log(user);
     const token = localStorage.getItem("authToken");
     const [historyList, setHistoryList] = useState([]);
@@ -38,13 +39,14 @@ function Home() {
         fetchUser();
         const fetchHistory = async () => {
             try {
-                const res = await axios.get("http://localhost:8000/accounts/gps/history/", {
+                const res = await axios.get("http://localhost:8000/reviews/stats/", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setHistoryList(res.data.first_name || res.data.username || "Utilisateur");
-                setStatut(res.data.role || "passager"); // adapt to your serializer
+                console.log(res.data);
+                setTotal_km(res.data.total_km)
+                
             } catch (error) {
                 console.error("Failed to fetch user:", error);
             } finally {
@@ -72,7 +74,7 @@ function Home() {
                             src="./src/assets/icons/search.svg"
                             alt="search" />
                     </a>
-                    <Chart />
+                    <Chart km={total_km}/>
                 </div>
                 <div className='relative w-9/10 px-4 py-10 bg-[#e8e8e8] rounded-3xl mt-9 flex flex-col'>
                     <h1 className=' absolute top-0 left-0 text-xl font-semibold p-4'>Activité Récente</h1>
