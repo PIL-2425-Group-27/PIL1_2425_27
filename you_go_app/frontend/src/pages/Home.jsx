@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import Chart from '../components/Chart';
 import Navbar from '../components/Navbar';
@@ -17,28 +17,15 @@ function Home() {
     const [user, setUser] = useState()
     const [labels, setLabels] = useState([])
     const [total_km, setTotal_km] = useState([])
-    const [total_reviews, setTotal_reviews] = useState([])
+    const [total_reviews, setTotal_reviews] = useState(0)
     const [total_trajets, setTotal_trajets] = useState([])
+    const [reviews_given, setReviewsGiven] = useState([]);
+    const [stats, setStats] = useState([]);
+
     console.log(user);
     const token = localStorage.getItem("authToken");
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get("http://localhost:8000/accounts/profile/", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setUser(res.data.first_name || res.data.username || "Utilisateur");
-                setStatut(res.data.role || "passager"); // adapt to your serializer
-            } catch (error) {
-                console.error("Failed to fetch user:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUser();
         const fetchHistory = async () => {
             try {
                 const res = await axios.get("http://localhost:8000/reviews/stats/", {
@@ -46,24 +33,39 @@ function Home() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                console.log(res.data.labels);
-                setLabels(res.data.labels)
-                setTotal_km(res.data.total_km)
-                setTotal_reviews(res.data.total_reviews_received)
-                setTotal_trajets(res.data.total_trajet)
-                
+
+                const labels = res.data.labels;
+                const total_km = res.data.total_km;
+                const total_trajets = res.data.total_trajets;
+                const reviews_given = res.data.reviews_given;
+
+                const structuredStats = labels.map((label, i) => ({
+                    label,
+                    km: total_km[i],
+                    trajets: total_trajets[i],
+                    reviews: reviews_given[i],
+                }));
+
+                setStats(structuredStats);
+
+                // Other existing setState calls
+                setLabels(labels);
+                setTotal_km(total_km);
+                setTotal_reviews(res.data.total_reviews_received);
+                setTotal_trajets(total_trajets);
             } catch (error) {
                 console.error("Failed to fetch user:", error);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchHistory();
     }, []);
-    
+
 
     if (loading) {
-        return <Loading/>;
+        return <Loading />;
     }
     return (
         <>
@@ -79,13 +81,19 @@ function Home() {
                             src="./src/assets/icons/search.svg"
                             alt="search" />
                     </a>
-                    <Chart km={total_km}/>
+                    <Chart km={total_km} />
                 </div>
                 <div className='relative w-9/10 px-4 py-10 bg-[#e8e8e8] rounded-3xl mt-9 flex flex-col'>
                     <h1 className=' absolute top-0 left-0 text-xl font-semibold p-4'>Activité Récente</h1>
-                        {/* {labels.map(()=>{
+                    {stats.map(({ label, km, trajets, reviews }) => (
+                        <div key={label} className='flex flex-col gap-1 mt-4 p-3 bg-white rounded-xl shadow-sm'>
+                            <h2 className='text-lg font-semibold text-gray-700'>{label}</h2>
+                            <p className='text-sm text-gray-600'>Kilomètres parcourus : <span className='font-medium'>{km} km</span></p>
+                            <p className='text-sm text-gray-600'>Trajets effectués : <span className='font-medium'>{trajets}</span></p>
+                            <p className='text-sm text-gray-600'>Avis donnés : <span className='font-medium'>{reviews}</span></p>
+                        </div>
+                    ))}
 
-                        })} */}
                     <a
                         className='w-fit mx-10 mt-5 underline underline-offset-2'
                         href='/History'
