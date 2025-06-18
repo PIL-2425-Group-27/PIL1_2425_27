@@ -131,7 +131,7 @@ function PublishRequest() {
                                 type="submit"
                                 className="bg-[#ffcd74] hover:bg-[#ddb570] text-white font-semibold px-6 py-2 rounded-xl transition-colors"
                             >
-                                Publier l'offre
+                                Publier la demande
                             </button>
                         </div>
                     </form>
