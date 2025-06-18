@@ -173,7 +173,9 @@ class MessageSerializer(serializers.ModelSerializer):
         validated_data['delivery_status'] = 'SENT'
         return Message.objects.create(**validated_data)
 
+'''def get_average_rating(self, obj):
 
+        return obj.average_rating'''
 class MessageUpdateSerializer(serializers.ModelSerializer):
     """Serializer for updating message content (editing)"""
     

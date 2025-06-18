@@ -87,11 +87,16 @@ class LoginSerializer(serializers.Serializer):
 
       
 class ResetPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    contact = serializers.CharField()
 
-    def validate_email(self, value):
-        if not User.objects.filter(email=value).exists():
-            raise serializers.ValidationError(_("Aucun utilisateur trouvé avec cet email."))
+    def validate_contact(self, value):
+        user = None
+        if '@' in value:
+            user = User.objects.filter(email=value).first()
+        else:
+            user = User.objects.filter(phone_number=value).first()
+        if not user:
+            raise serializers.ValidationError(_("Aucun utilisateur trouvé avec cet email ou téléphone."))
         return value
 
 
@@ -176,7 +181,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         return value
 
     def get_average_rating(self, obj):
-        return obj.average_rating
+        try:
+            return obj.average_rating
+        except (AttributeError, TypeError):
+            return 0.0
+
 
 
 class VehicleSerializer(serializers.ModelSerializer):
