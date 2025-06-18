@@ -39,20 +39,14 @@ function App() {
 useEffect(() => {
   const fetchActiveStatus = async () => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("active_status");
       if (!token) {
         console.warn("No access token found.");
         setActive(false);
         return;
       }
 
-      const response = await axios.get('http://127.0.0.1:8000/active-status/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setActive(response.data.active);
+      setActive(token);
     } catch (error) {
       console.error('Error fetching active status:', error.response || error.message);
       setActive(false);
