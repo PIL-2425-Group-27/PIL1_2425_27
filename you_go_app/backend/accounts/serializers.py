@@ -3,6 +3,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 from django.db import models
 from .models import UserProfile, Vehicle, KYC, TrackingGPS, GPSHistory
 from django.utils.translation import gettext_lazy as _
@@ -65,7 +66,26 @@ class RoleSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Rôle invalide.")
         return value
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
 
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if email and password:
+            user = authenticate(username=email, password=password)
+            if not user:
+                raise serializers.ValidationError('Identifiants invalides.')
+            if not user.is_active:
+                raise serializers.ValidationError('Compte désactivé.')
+            attrs['user'] = user
+            return attrs
+        else:
+            raise serializers.ValidationError('Email et mot de passe requis.')
+
+      
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
@@ -156,7 +176,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return value
 
     def get_average_rating(self, obj):
-        return obj.user.average_rating
+        return obj.average_rating
 
 
 class VehicleSerializer(serializers.ModelSerializer):
