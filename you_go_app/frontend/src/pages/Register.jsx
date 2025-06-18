@@ -158,7 +158,7 @@ function Register() {
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border2}`}>
                         <input
                             className=""
-                            placeholder="Numero de telephone"
+                            placeholder="Téléphone:Ex 01XXXXXXXX"
                             type="number"
                             name="phone_number"
                             id="phone"
