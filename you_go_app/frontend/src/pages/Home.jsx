@@ -23,7 +23,7 @@ function Home() {
                     }
                 });
                 setUser(res.data.first_name || res.data.username || "Utilisateur");
-                setStatut(res.data.role || "passager"); // adapt to your serializer
+                setStatut(res.data.role || "PASSAGER"); // adapt to your serializer
             } catch (error) {
                 console.error("Failed to fetch user:", error);
             } finally {
@@ -33,8 +33,8 @@ function Home() {
         fetchUser();
     }, []);
 
-    const action = statut === 'passager' ? 'Publier une demande' : 'Publier une offre';
-    const link = statut === 'passager' ? '/PublishRequest' : '/PublishOffer';
+    const action = statut === 'PASSAGER' ? 'Publier une demande' : 'Publier une offre';
+    const link = statut === 'PASSAGER' ? '/PublishRequest' : '/PublishOffer';
 
     const historyList = [
         { id: 0, content: 'Trajet Parana-ENA', duration: '30 min' },
@@ -45,6 +45,7 @@ function Home() {
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Chargement...</div>;
     } 
+    localStorage.removeItem('raven',true)
 
     return (
         <>
