@@ -9,16 +9,18 @@ function HistoryItem(props) {
     return (
         <>
             <div
-                className={`w-[95%] h-[10vh] rounded-xl px-4 ${props.theme==false?'bg-[#dedede]':'bg-[#1f1f1f] text-white'} flex flex-row items-center justify-start gap-3`}
+                className={`w-[95%] py-4 rounded-xl px-4 ${props.theme == false ? 'bg-[#dedede]' : 'bg-[#1f1f1f] text-white'} flex flex-row items-center justify-start gap-3`}
             >
                 <div
-                    className={`w-[8vw] aspect-square bg-[url(./src/assets/icons/clock.svg)] ${props.theme==false?'':'invert-100'} bg-no-repeat bg-center bg-cover`}
+                    className={`w-[8vw] aspect-square bg-[url(./src/assets/icons/clock.svg)] ${props.theme == false ? '' : 'invert-100'} bg-no-repeat bg-center bg-cover`}
                 >
 
                 </div>
-                <div className='flex flex-col items-start justify-center gap-2'>
-                    <p className='text-wrap'>{props.content}</p>
-                    <h1 className='text-sm font-semibold'>{props.duration}</h1>
+                <div key={props.label} className='flex flex-col items-start justify-center gap-2'>
+                    <h2 className='text-lg font-semibold text-gray-700'>{props.label}</h2>
+                    <p className='text-sm text-gray-600'>Kilomètres parcourus : <span className='font-medium'>{props.km} km</span></p>
+                    <p className='text-sm text-gray-600'>Trajets effectués : <span className='font-medium'>{props.trajets}</span></p>
+                    <p className='text-sm text-gray-600'>Avis donnés : <span className='font-medium'>{props.reviews}</span></p>
                 </div>
             </div>
 

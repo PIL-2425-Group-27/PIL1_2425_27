@@ -8,6 +8,7 @@ import Title from "../components/Title";
 import Toggle from "../components/Toggle";
 import ValidatePopup from "../components/ValidatePopup";
 import axios from "axios";
+import Loading from "./Loading";
 
 
 function Profile() {
@@ -19,8 +20,9 @@ function Profile() {
     const [loading, setLoading] = useState(true);
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
+    const [picture, setPicture] = useState('./src/assets/img/placeholderPicture.png')
     const token = localStorage.getItem("authToken")
-    const verified = true
+    const [verified, setVerified] = useState(false)
     let fn = firstName
     let ln = lastName
 
@@ -32,6 +34,8 @@ function Profile() {
                         Authorization: `Bearer ${token}`
                     }
                 });
+                console.log(res.data);
+                
                 setFirstName(res.data.first_name || res.data.username || "Utilisateur");
                 setLastName(res.data.last_name || "");
                 setStatut(res.data.role || "passager"); // adapt to your serializer
@@ -54,6 +58,9 @@ function Profile() {
     useEffect(() => {
         console.log(`Est visible :${visible}`);
     }, [visible]);
+    if (loading) {
+        return <Loading />;
+    }
     return (
         <>
             <div
@@ -64,11 +71,11 @@ function Profile() {
                 <div
                     className='w-full flex flex-col items-center'
                 >
-                    <Photo picture={'./src/assets/img/bg.jpg'} />
+                    <Photo picture={picture} />
                     <Title content={fn + ' ' + ln} subContent={statut} visible={verified} image={'./src/assets/icons/verified.svg'} />
                 </div>
                 <div
-                    className={`w-full flex flex-col items-center gap-1 ${verified ? 'hidden' : ''}`}>
+                    className={`w-full flex flex-col items-center gap-1 mt-3 ${verified ? 'hidden' : ''}`}>
                     <h1>Votre profil n'est pas vérifié</h1>
                     <Button text={'Vérifier maintenant'} textCol={'text-white font-semibold'} bg={'bg-[#ffcd74]'} icon={'./src/assets/icons/verified.svg'} link={'/KYC'} />
                 </div>

@@ -137,7 +137,7 @@ function SearchRides() {
 
         {/* Formulaire de recherche étendu */}
         <div className="w-full max-w-4xl px-4 mt-6">
-          <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+          <div className="bg-gray-50 p-6 rounded-lg shadow-md mt-[6vh]">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Point de départ */}
               <div>
@@ -253,7 +253,7 @@ function SearchRides() {
               <select
                 value={filters.ordering}
                 onChange={(e) => handleFilterChange('ordering', e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Par défaut</option>
                 <option value="price">Prix croissant</option>
@@ -269,7 +269,7 @@ function SearchRides() {
               <button
                 onClick={() => searchRides(1)}
                 disabled={loading}
-                className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-6 py-2 bg-[#ffcd74] text-white rounded-md hover:bg-[#d3ae6e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {loading ? "Recherche..." : "Rechercher"}
               </button>
