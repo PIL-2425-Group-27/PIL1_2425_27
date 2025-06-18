@@ -82,6 +82,7 @@ function Register() {
             console.log("Submitted successfully", user);
             localStorage.setItem("active_status", true);
             localStorage.setItem("authToken", token);
+            localStorage.setItem("userToken", user.id);
             console.log(token);
 
             setSubmitted(true); // Trigger navigation

@@ -82,12 +82,13 @@ function Login() {
             });
 
             // If login is successful
-            const {token, user}  = response.data.tokens.access;
-            console.log("Login successful", response.data.tokens.access);
+            const {token, user}  = response.data;
+            console.log("Login successful", user);
 
             // Save token to localStorage or context for future requests
-            localStorage.setItem("authToken", response.data.tokens.access);
-            localStorage.setItem("userToken", user);
+            localStorage.setItem("authToken", response.data);
+            localStorage.setItem("userToken", user.first_name ,user.last_name);
+            localStorage.setItem("active_status", true);
             
             // Navigate to home or dashboard
             navigate('/');
