@@ -87,35 +87,28 @@ class LoginSerializer(serializers.Serializer):
 
       
 class ResetPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    contact = serializers.CharField()
 
-    def validate_email(self, value):
-        if not User.objects.filter(email=value).exists():
-            raise serializers.ValidationError(_("Aucun utilisateur trouvé avec cet email."))
+    def validate_contact(self, value):
+        user = None
+        if '@' in value:
+            user = User.objects.filter(email=value).first()
+        else:
+            user = User.objects.filter(phone_number=value).first()
+        if not user:
+            raise serializers.ValidationError(_("Aucun utilisateur trouvé avec cet email ou téléphone."))
         return value
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField(write_only=True, required=True)
-    new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    new_password2 = serializers.CharField(write_only=True, required=True)
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
+    new_password2 = serializers.CharField(required=True)
 
-    def validate(self, attrs):
-        if attrs['new_password'] != attrs['new_password2']:
-            raise serializers.ValidationError({"new_password": "Les nouveaux mots de passe ne correspondent pas."})
-        return attrs
-
-    def validate_old_password(self, value):
-        user = self.context['request'].user
-        if not user.check_password(value):
-            raise serializers.ValidationError(_("L'ancien mot de passe est incorrect."))
-        return value
-
-    def save(self):
-        user = self.context['request'].user
-        user.set_password(self.validated_data['new_password'])
-        user.save()
-
+    def validate(self, data):
+        if data['new_password'] != data['new_password2']:
+            raise serializers.ValidationError("Les mots de passe ne correspondent pas.")
+        return data
 
 class UserProfileSerializer(serializers.ModelSerializer):
     role = serializers.CharField(source='user.role', read_only=True)

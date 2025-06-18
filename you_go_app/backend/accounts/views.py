@@ -20,7 +20,7 @@ from .models import UserProfile, Vehicle, KYC, TrackingGPS, GPSHistory
 from .serializers import (
     RegisterSerializer, ResetPasswordSerializer, ProfileSerializer,
     VehicleSerializer, KYCSerializer, TrackingGPSSerializer,
-    GPSHistorySerializer, DeleteAccountSerializer, RoleSerializer, LoginSerializer
+    GPSHistorySerializer, DeleteAccountSerializer, RoleSerializer, LoginSerializer, ChangePasswordSerializer
 )
 from mailing.utils import send_transactional_email
 
@@ -176,6 +176,25 @@ class ResetPasswordView(APIView):
             return Response({
                 "error": "Code invalide ou expiré."
             }, status=400)
+        
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        old_password = serializer.validated_data['old_password']
+        new_password = serializer.validated_data['new_password']
+
+        if not user.check_password(old_password):
+            return Response({"detail": "Ancien mot de passe incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(new_password)
+        user.save()
+        return Response({"detail": "Mot de passe changé avec succès."}, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
