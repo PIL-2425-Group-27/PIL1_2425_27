@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import Return from "../components/Return";
+import Title from "../components/Title";
+
 function PublishOffer() {
     const [form, setForm] = useState({
         driverName: "",
@@ -14,8 +17,10 @@ function PublishOffer() {
         description: ""
     });
     const handleChange = (e) => {
-        setForm({ ...form, 
-            [e.target.name]: e.target.value});
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        });
     };
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,114 +29,159 @@ function PublishOffer() {
     };
     return (
         <>
-        <Navbar/>
-        <div className="container mt-5">
-            <h2>Publier une offre</h2>
-            <form onSubmit={handleSubmit} className="mt-4">
-                <div className="mt-3">
-                    <label htmlFor="driverName" className="form-label">Nom du conducteur</label>
-                    <input 
-                        type="text" 
-                        className="w-full p-2 border rounded-2xl"
-                        id="driverName"
-                        name="driverName"
-                        value={form.driverName}
-                        onChange={handleChange}/>
+            <Navbar />
+            <Return theme={false} />
+            <div className="w-full h-screen flex flex-col items-center py-[5vh]">
+                <Title content={"Publier une offre"} floating={true} />
+                <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-2xl shadow-sm border border-gray-200">
+                    <form onSubmit={handleSubmit}>
+                        <table className="w-full text-left border-separate border-spacing-y-3">
+                            <tbody>
+                                <tr>
+                                    <td className="w-1/3 font-semibold">Nom du conducteur</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="driverName"
+                                            name="driverName"
+                                            value={form.driverName}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Point de départ</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="start_point"
+                                            name="start_point"
+                                            value={form.start_point}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Point d'arrivée</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="end_point"
+                                            name="end_point"
+                                            value={form.end_point}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Heure de départ</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="start_time"
+                                            name="start_time"
+                                            value={form.start_time}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Heure d'arrivée</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="end_time"
+                                            name="end_time"
+                                            value={form.end_time}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Nature du prix</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="price_type"
+                                            name="price_type"
+                                            value={form.price_type}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Prix fixé</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="fixed_price"
+                                            name="fixed_price"
+                                            value={form.fixed_price}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Modèle de véhicule</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="vehiculesmodel"
+                                            name="vehiculesmodel"
+                                            value={form.vehiculesmodel}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Places disponibles</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="seats"
+                                            name="seats"
+                                            value={form.seats}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="font-semibold">Conditions</td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border border-gray-300 rounded-lg"
+                                            id="description"
+                                            name="description"
+                                            value={form.description}
+                                            onChange={handleChange}
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div className="mt-6 text-right">
+                            <button
+                                type="submit"
+                                className="bg-[#ffcd74] hover:bg-[#ddb570] text-white font-semibold px-6 py-2 rounded-xl transition-colors"
+                            >
+                                Publier l'offre
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div className="mt-3">
-                    <label htmlFor="start_point" className="form-label">Point de départ</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="start_point"
-                    name="start_point"
-                    value={form.start_point}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="end_point" className="form-label">Point d'arrivée</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="end_point"
-                    name=" end_point"
-                    value={form.end_point}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="start_time" className="form-label">Heure de départ</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="start_time"
-                    name="start_time"
-                    value={form.start_time}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="end_time" className="form-label">Heure d'arrivée</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="end_time"
-                    name="end_time"
-                    value={form.end_time}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="price_type" className="form-label">Nature du prix</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="price_type"
-                    name="price_type"
-                    value={form.price_type}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="fixed_price" className="form-label">Prix fixé</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="fixed_price"
-                    name="fixed_price"
-                    value={form.fixed_price}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="vehiculesmodel" className="form-label">Modèle de véhicule</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="vehiculesmodel"
-                    name="vehiculesmodel"
-                    value={form.vehiculesmodel}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="seats" className="form-label">Nombres de places disponibles</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="seats"
-                    name="seats"
-                    value={form.seats}
-                    onChange={handleChange}/>
-                </div>
-                <div className="mt-3">
-                    <label htmlFor="description" className="form-label">Conditions</label>
-                    <input 
-                    type="text" 
-                    className="form-control"
-                    id="description"
-                    name="description"
-                    value={form.description}
-                    onChange={handleChange}/>
-                </div>
-                <button type="submit" className="bg-green-950 text-white px-4 rounded">Publier l'offre</button>
 
-            </form>
-        </div>
+
+            </div>
         </>
     );
 }
