@@ -79,9 +79,9 @@ function Register() {
             });
             const { access, user } = response.data;
 
-            console.log("Submitted successfully", user.access);
+            console.log("Submitted successfully", access);
             localStorage.setItem("active_status", true);
-            localStorage.setItem("authToken", user.access);
+            localStorage.setItem("authToken", access);
             localStorage.setItem("userToken", user.id);
             console.log(access);
 

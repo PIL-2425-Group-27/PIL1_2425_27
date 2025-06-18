@@ -150,29 +150,24 @@ class ResetPasswordView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        email = request.data.get("email")
         code = request.data.get("code")
-        new_password = request.data.get("new_password")
 
-        if not all([email, code, new_password]):
+        if not all([code]):
             return Response({
-                "error": "Email, code et nouveau mot de passe requis."
+                "error": "Code requis."
             }, status=400)
 
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get()
             if not user.is_reset_code_valid(code):
                 return Response({
                     "error": "Code invalide ou expiré."
                 }, status=400)
             
-            user.set_password(new_password)
             user.reset_code = None
             user.reset_code_expires = None
-            user.save(update_fields=['password', 'reset_code', 'reset_code_expires'])
-            
-            logger.info(f"Password reset successful for {email}")
-            
+            user.save(update_fields=['reset_code', 'reset_code_expires'])
+                        
             return Response({
                 "message": "Mot de passe mis à jour avec succès."
             }, status=200)

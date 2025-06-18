@@ -25,7 +25,7 @@ function PublishOffer() {
     const [successMessage, setSuccessMessage] = useState("");
 
     // Configuration API
-    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/offers/create/';
+    const API_BASE_URL = 'http://127.0.0.1:8000/offers/create/';
 
     // Configuration axios avec intercepteur pour l'authentification
     const apiClient = axios.create({

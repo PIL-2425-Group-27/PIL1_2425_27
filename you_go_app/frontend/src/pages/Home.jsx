@@ -4,6 +4,7 @@ import Chart from '../components/Chart';
 import Navbar from '../components/Navbar';
 import Notification from '../components/Notification';
 import axios from 'axios';
+import Loading from './Loading';
 
 
 
@@ -44,7 +45,7 @@ function Home() {
     ];
 
     if (loading) {
-        return <div className="flex justify-center items-center h-screen">Chargement...</div>;
+        return <Loading/>;
     }
     return (
         <>
