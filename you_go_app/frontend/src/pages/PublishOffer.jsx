@@ -25,11 +25,20 @@ function PublishOffer() {
     const [successMessage, setSuccessMessage] = useState("");
 
     // Configuration API
-    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/offers/create/';
-
+     try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/offers/create/",
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
     // Configuration axios avec intercepteur pour l'authentification
     const apiClient = axios.create({
-        baseURL: API_BASE_URL,
+        baseURL: reponse,
         headers: {
             'Content-Type': 'application/json',
         },
