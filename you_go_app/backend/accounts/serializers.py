@@ -175,9 +175,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Vous ne pouvez modifier votre nom qu'une fois tous les 30 jours.")
         return value
     def get_average_rating(self, obj):
-        if obj.user.average_rating is not None:
-            return round(obj.user.average_rating, 2)
-        return None
+        return obj.average_rating
 
 
 class VehicleSerializer(serializers.ModelSerializer):

@@ -56,12 +56,6 @@ function Login() {
             }
         }
     });
-    const isCompatible = () => {
-        setCompatible((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')
-        setShowErr(!((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit'))
-        setBorder1(((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')?'border-green-200':'border-red-200')
-        setBorder2(((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')?'border-green-200':'border-red-200')
-    }
 
     const checkValidity = useMemo(() => {
         return password.trim() !== '' && contact.trim() !== '';
@@ -73,34 +67,40 @@ function Login() {
         }
     }, [compatible, navigate]);
 
-const send = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setShowErr(false);
+    const send = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setShowErr(false);
+        setCompatible((formData.contact.toString() === '0198989898' || formData.contact === 'martharun514@gmail.com') && formData.password === 'legit')
+        setBorder1(showErr ? 'border-green-200' : 'border-red-200')
+        setBorder2(showErr ? 'border-green-200' : 'border-red-200')
 
-    try {
-        const response = await axios.post('http://localhost:8000/accounts/login/', {
-            email: formData.contact,
-            password: formData.password
-        });
-        
-        // If login is successful
-        const { token, user } = response.data;
-        console.log("Login successful", user);
+        try {
+            const response = await axios.post('http://localhost:8000/accounts/login/', {
+                email: formData.contact,
+                password: formData.password
+            });
 
-        // Save token to localStorage or context for future requests
-        localStorage.setItem("authToken", token);
+            // If login is successful
+            const { token, user } = response.data;
+            console.log("Login successful", user);
 
-        // Navigate to home or dashboard
-        navigate('/');
+            // Save token to localStorage or context for future requests
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userToken", user);
+            
+            // Navigate to home or dashboard
+            navigate('/');
 
-    } catch (error) {
-        console.error("Login failed:", error.response?.data || error.message);
-        setShowErr(true);
-    } finally {
-        setLoading(false);
-    }
-};
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+            setShowErr(true);
+            setBorder1(showErr ? 'border-green-200' : 'border-red-200')
+            setBorder2(showErr ? 'border-green-200' : 'border-red-200')
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -114,7 +114,6 @@ const send = async (e) => {
                     onSubmit={
                         (e) => {
                             e.preventDefault();
-                            isCompatible(e);
                             handleSubmit(e);
                             send(e);
                         }
@@ -123,8 +122,8 @@ const send = async (e) => {
                     <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border1}`}>
                         <input
                             className=""
-                            placeholder="E-mail ou téléphone"
-                            type="text"
+                            placeholder="E-mail"
+                            type="email"
                             name="contact"
                             id="contact"
                             value={formData.contact}
@@ -137,7 +136,7 @@ const send = async (e) => {
                             }}
                         />
                     </div>
-                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border2 }`}>
+                    <div className={`w-9/12 max-w-lg h-13 bg-white rounded-4xl flex flex-row items-center justify-between px-4 border-2 ${border2}`}>
                         <input
                             placeholder="Mot de passe"
                             type={visible ? 'text' : 'password'}

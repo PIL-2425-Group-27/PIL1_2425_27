@@ -77,7 +77,7 @@ function Profile() {
                 <div className="w-full flex flex-col items-center justify-center gap-5 mb-10">
                     <Button text={"Se déconnecter"} textCol={'text-white font-semibold'} bg={'bg-red-400 active:bg-red-500 '} icon={"./src/assets/icons/logout.svg"} submitted={true} link={'/Login'} />
                     <div className="w-full">
-                        <Button text={"Supprimer le compte"} textCol={'text-red-400 font-semibold'} bg={'bg-white border-2 border-red-400 active:bg-gray-100 mb-10'} icon={"./src/assets/icons/deleteForever2.svg"} submitted={true} onClick={() => { setIt() }} />
+                        <Button text={"Supprimer le compte"} textCol={'text-red-400 font-semibold'} bg={'bg-white border-2 border-red-400 active:bg-gray-100 mb-10'} icon={"./src/assets/icons/deleteForever2.svg"} submitted={true} onClick={() => { setIt();localStorage.removeItem('acces_token');localStorage.removeItem('active_status') }} />
                     </div>
                 </div>
                 <ValidatePopup warning={'Voulez-vous supprimer ce compte?\n Tapez votre mot de passe puis validez.'} visible={visible} setVisible={setVisible}/>
