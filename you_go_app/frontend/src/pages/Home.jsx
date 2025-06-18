@@ -1,52 +1,36 @@
-import { useState,useEffect } from 'react';
 import Button from '../components/Button';
 import Chart from '../components/Chart';
 import Navbar from '../components/Navbar';
 import Notification from '../components/Notification';
-import axios from 'axios';
-
 
 function Home() {
-    const [user, setUser] = useState(null);
-    const [statut, setStatut] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const theme = false;
-
-    const token = localStorage.getItem("authToken");
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get("http://localhost:8000/accounts/profile/", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setUser(res.data.first_name || res.data.username || "Utilisateur");
-                setStatut(res.data.role || "PASSAGER"); // adapt to your serializer
-            } catch (error) {
-                console.error("Failed to fetch user:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUser();
-    }, []);
-
-    const action = statut === 'PASSAGER' ? 'Publier une demande' : 'Publier une offre';
-    const link = statut === 'PASSAGER' ? '/PublishRequest' : '/PublishOffer';
-
+    let theme = false
+    let statut = 'passager'
+    let action = statut=='passager'?'Publier une demande':'Publier une offre'
+    let link = statut=='passager'?'/PublishRequest':'/PublishOffer'
+    const user = localStorage.getItem("first_name");
+    console.log(user);
+    
     const historyList = [
-        { id: 0, content: 'Trajet Parana-ENA', duration: '30 min' },
-        { id: 1, content: 'Trajet IITA-FASEG', duration: '45 min' },
-        { id: 2, content: 'Trajet Calavi-ENA', duration: '25 min' },
-    ];
-
-    if (loading) {
-        return <div className="flex justify-center items-center h-screen">Chargement...</div>;
-    } 
-    localStorage.removeItem('raven',true)
-
+        {
+            id: 0,
+            content: 'Trajet Parana-ENA',
+            duration: '30 min',
+            link: '',
+        },
+        {
+            id: 1,
+            content: 'Trajet IITA-FASEG',
+            duration: '45 min',
+            link: '',
+        },
+        {
+            id: 2,
+            content: 'Trajet Calavi-ENA',
+            duration: '25 min',
+            link: '',
+        },
+    ]
     return (
         <>
             <div className='relative w-full h-screen flex flex-col items-center animate-fade'>
