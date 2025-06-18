@@ -168,7 +168,7 @@ const send = async (e) => {
                     <p className={`w-9/12 text-sm text-center text-red-400 ${showErr ? '' : 'hidden'}`}>
                         Vos identifiants sont incorrects.Veuillez réessayer</p>
                     <Button
-                        text={loading ? "Chargement..." : "S'inscrire"}
+                        text={loading ? "Chargement..." : "Se connecter"}
                         textCol={'text-white'}
                         bg={(loading || !checkValidity) ? 'bg-gray-200' : 'bg-[#ffcd74]'}
                         type={'submit'}
